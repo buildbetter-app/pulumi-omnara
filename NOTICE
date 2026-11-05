@@ -1,0 +1,8 @@
+Pulumi provider for Omnara
+Copyright (c) 2026 BuildBetter
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+spec/openapi.yaml is the Omnara public API specification, copied unmodified
+from https://github.com/omnara-ai/omnara (api/openapi/openapi.yaml). Omnara
+is licensed under the Apache License, Version 2.0.
