@@ -1,0 +1,16 @@
+name: omnara-agent-harness
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+description: An Omnara project with a model, a skill, memory, and a scheduled triage agent.
+config:
+  anthropicApiKey:
+    type: string
+    secret: true
+  modelBaseUrl:
+    type: string
+    default: ""
+  modelSlug:
+    type: string
+    default: claude-sonnet-5-5

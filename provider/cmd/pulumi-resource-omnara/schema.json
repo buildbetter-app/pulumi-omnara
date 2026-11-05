@@ -1,0 +1,5300 @@
+{
+  "name": "omnara",
+  "displayName": "Omnara",
+  "description": "A Pulumi provider for Omnara, the open-source managed agent platform. Generated from the Omnara OpenAPI specification.",
+  "keywords": [
+    "pulumi",
+    "omnara",
+    "agents",
+    "category/infrastructure",
+    "kind/native"
+  ],
+  "homepage": "https://github.com/buildbetter-app/pulumi-omnara",
+  "license": "Apache-2.0",
+  "attribution": "Generated from the Omnara OpenAPI specification, version 0.1.0.",
+  "repository": "https://github.com/buildbetter-app/pulumi-omnara",
+  "pluginDownloadURL": "github://api.github.com/buildbetter-app/pulumi-omnara",
+  "publisher": "BuildBetter",
+  "meta": {
+    "moduleFormat": "(.*)"
+  },
+  "language": {
+    "csharp": {
+      "packageReferences": {
+        "Pulumi": "3.*"
+      },
+      "respectSchemaVersion": true,
+      "rootNamespace": "BuildBetter"
+    },
+    "go": {
+      "generateResourceContainerTypes": true,
+      "importBasePath": "github.com/buildbetter-app/pulumi-omnara/sdk/go/omnara",
+      "respectSchemaVersion": true
+    },
+    "nodejs": {
+      "dependencies": {
+        "@pulumi/pulumi": "^3.142.0"
+      },
+      "packageDescription": "A Pulumi provider for Omnara, the open-source managed agent platform. Generated from the Omnara OpenAPI specification.",
+      "packageName": "@buildbetter-app/pulumi-omnara",
+      "respectSchemaVersion": true
+    },
+    "python": {
+      "packageName": "pulumi_omnara",
+      "pyproject": {
+        "enabled": true
+      },
+      "requires": {
+        "pulumi": "\u003e=3.142.0,\u003c4.0.0"
+      },
+      "respectSchemaVersion": true
+    }
+  },
+  "config": {
+    "variables": {
+      "apiKey": {
+        "type": "string",
+        "description": "An Omnara personal access token or organization API key. Can also be set with the `OMNARA_API_KEY` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_KEY"
+          ]
+        },
+        "secret": true
+      },
+      "apiUrl": {
+        "type": "string",
+        "description": "Base URL of the Omnara API, including the version path. Defaults to https://api.omnara.com/v1. For a self-hosted deployment use `<origin>/api/v1`. Can also be set with the `OMNARA_API_URL` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_URL"
+          ]
+        }
+      },
+      "orgId": {
+        "type": "string",
+        "description": "Default organization ID for resources and functions that don't set `orgId`. Can also be set with the `OMNARA_ORG_ID` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_ORG_ID"
+          ]
+        }
+      }
+    }
+  },
+  "types": {
+    "omnara:index:AWSCredentialsSecretMaterial": {
+      "properties": {
+        "accessKeyId": {
+          "type": "string"
+        },
+        "externalId": {
+          "type": "string",
+          "description": "Requires role_arn."
+        },
+        "kind": {
+          "type": "string"
+        },
+        "roleArn": {
+          "type": "string"
+        },
+        "secretAccessKey": {
+          "type": "string",
+          "secret": true
+        },
+        "sessionToken": {
+          "type": "string",
+          "secret": true
+        }
+      },
+      "type": "object",
+      "required": [
+        "accessKeyId",
+        "kind",
+        "secretAccessKey"
+      ]
+    },
+    "omnara:index:AgentConfigDefinition": {
+      "description": "An agent config as a JSON object. This schema is the source of truth for agent configs: the server compiles YAML and JSON configs against it.",
+      "properties": {
+        "gitCredentials": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionGitCredentials",
+          "description": "Integration whose git credentials the agent's machines use."
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "interactionHandlers": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Interaction handlers keyed by integration name."
+        },
+        "machineSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionMachineSource"
+          }
+        },
+        "maxDepth": {
+          "type": "integer"
+        },
+        "maxSubagents": {
+          "type": "integer"
+        },
+        "mcp": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionMCPServer"
+          }
+        },
+        "memoryStores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionMemoryStore"
+          }
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionModel"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subagents": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionSubagent"
+          }
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionTool"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "instruction",
+        "model"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionGitCredentials": {
+      "description": "Integration whose git credentials the agent's machines use.",
+      "properties": {
+        "integration": {
+          "type": "string"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": "Prevents pushing, even if the integration allows it."
+        },
+        "repositoryIds": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "GitHub repository IDs the credentials can access. Defaults to every repository the installation can access."
+        }
+      },
+      "type": "object",
+      "required": [
+        "integration"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionMCPAuth": {
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "secretId": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "Allowed values: `bearer`, `oauth`, `sigv4`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "secretId",
+        "type"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionMCPServer": {
+      "properties": {
+        "auth": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionMCPAuth"
+        },
+        "defaultEnabled": {
+          "type": "boolean"
+        },
+        "deferred": {
+          "type": "boolean"
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionToolPermission"
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:AgentConfigDefinitionMCPTool"
+          }
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "url"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionMCPTool": {
+      "properties": {
+        "deferred": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionToolPermission"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:AgentConfigDefinitionMachineSource": {
+      "properties": {
+        "cwd": {
+          "type": "string"
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "envOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "initialNumMachines": {
+          "type": "integer"
+        },
+        "machineCpu": {
+          "type": "integer"
+        },
+        "machineMemoryMb": {
+          "type": "integer"
+        },
+        "machineName": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "machinePoolName": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "machineProviderOptionsOverlay": {
+          "$ref": "pulumi.json#/Any"
+        },
+        "maxMachines": {
+          "type": "integer"
+        },
+        "secretEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:AgentConfigDefinitionMemoryStore": {
+      "properties": {
+        "access": {
+          "type": "string",
+          "description": "Allowed values: `read`, `read_write`."
+        },
+        "name": {
+          "type": "string",
+          "description": "Machine-readable memory store identifier consisting of lowercase ASCII segments separated by single hyphens."
+        }
+      },
+      "type": "object",
+      "required": [
+        "access",
+        "name"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionModel": {
+      "properties": {
+        "cacheRetention": {
+          "type": "string",
+          "description": "Allowed values: `none`, `short`, `long`."
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Context budget for input and output tokens. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "providerConfig": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "reasoning": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionModelReasoning"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "providerConfig"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionModelReasoning": {
+      "properties": {
+        "effort": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "effort"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionSubagent": {
+      "properties": {
+        "archiveAfterIdleMinutes": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "instruction": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionSubagentInstruction"
+        },
+        "maxInstances": {
+          "type": "integer"
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionSubagentModel"
+        },
+        "profile": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "type": {
+          "type": "string",
+          "description": "Allowed values: `profile`, `self`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionSubagentInstruction": {
+      "properties": {
+        "append": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:AgentConfigDefinitionSubagentModel": {
+      "properties": {
+        "cacheRetention": {
+          "type": "string",
+          "description": "Allowed values: `none`, `short`, `long`."
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Context budget for input and output tokens. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "providerConfig": {
+          "type": "string",
+          "description": "Name of an existing resource, resolved when the config is compiled."
+        },
+        "reasoning": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionModelReasoning"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:AgentConfigDefinitionTool": {
+      "properties": {
+        "deferred": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "inputSchema": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionToolInputSchema",
+          "description": "A JSON Schema for the tool's input. Keywords beyond those listed, such as additionalProperties or description, are allowed."
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:AgentConfigDefinitionToolPermission"
+        },
+        "type": {
+          "type": "string",
+          "description": "Allowed values: `built_in`, `custom`."
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:AgentConfigDefinitionToolInputSchema": {
+      "description": "A JSON Schema for the tool's input. Keywords beyond those listed, such as additionalProperties or description, are allowed.",
+      "properties": {
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "const": "object"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ]
+    },
+    "omnara:index:AgentConfigDefinitionToolPermission": {
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "parameters": {
+          "$ref": "pulumi.json#/Any"
+        }
+      },
+      "type": "object",
+      "required": [
+        "mode"
+      ]
+    },
+    "omnara:index:AgentConfigDetails": {
+      "properties": {
+        "compiledDefinition": {
+          "$ref": "#/types/omnara:index:CompiledAgentConfig",
+          "description": "Read-only saved compiled configuration, including default tools and derived subagent overrides."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "effectiveDefinitionHash": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "Agent config ID (acfg_...)."
+        },
+        "instructionHash": {
+          "type": "string"
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:AgentConfigModel"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "source": {
+          "type": "string",
+          "description": "Saved source text, exactly as sent."
+        },
+        "sourceFormat": {
+          "type": "string",
+          "description": "Allowed values: `yaml`, `json`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "compiledDefinition",
+        "createdAt",
+        "effectiveDefinitionHash",
+        "id",
+        "model",
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:AgentConfigModel": {
+      "properties": {
+        "apiFormat": {
+          "type": "string",
+          "description": "Wire protocol the model endpoint speaks: openai-responses, openai-chat-completions, or anthropic-messages. Allowed values: `openai-responses`, `openai-chat-completions`, `anthropic-messages`."
+        },
+        "apiVariant": {
+          "type": "string"
+        },
+        "configuredModelId": {
+          "type": "string"
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Effective context budget for input and output tokens after model, project, and agent settings are applied. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "currentRevisionId": {
+          "type": "string"
+        },
+        "defaultCacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer",
+          "description": "Effective per-request output-token cap sent to the provider."
+        },
+        "defaultReasoningEffort": {
+          "type": "string"
+        },
+        "inputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Effective known output-token ceiling after model and project settings, or null when unknown."
+        },
+        "name": {
+          "type": "string",
+          "description": "Configured model name selected by this agent config, rendered from the current configured model record."
+        },
+        "outputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "providerConfig": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "providerModelSlug": {
+          "type": "string",
+          "description": "Exact provider model slug on the configured model's current revision at response time."
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supportsReasoning": {
+          "type": "boolean"
+        },
+        "supportsTools": {
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "required": [
+        "apiFormat",
+        "apiVariant",
+        "configuredModelId",
+        "contextWindowTokens",
+        "currentRevisionId",
+        "defaultCacheRetention",
+        "defaultReasoningEffort",
+        "inputModalities",
+        "name",
+        "outputModalities",
+        "providerConfig",
+        "providerModelSlug",
+        "supportedReasoningEfforts",
+        "supportsReasoning",
+        "supportsTools"
+      ]
+    },
+    "omnara:index:AgentCronTriggerTarget": {
+      "properties": {
+        "agentId": {
+          "type": "string"
+        },
+        "deliveryMode": {
+          "type": "string",
+          "description": "Each firing sends a queued or steering message to the agent. Defaults to `queued` on creation; omitted updates preserve the current mode. Allowed values: `queued`, `steering`."
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentId",
+        "type"
+      ]
+    },
+    "omnara:index:AgentEventWebhookScope": {
+      "description": "Watches only this agent, not its descendants.",
+      "properties": {
+        "agentId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentId",
+        "type"
+      ]
+    },
+    "omnara:index:AgentProfileCronTriggerTarget": {
+      "properties": {
+        "agentProfileId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentProfileId",
+        "type"
+      ]
+    },
+    "omnara:index:AgentProfileEventWebhookScope": {
+      "properties": {
+        "agentProfileId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentProfileId",
+        "type"
+      ]
+    },
+    "omnara:index:CompiledAgentConfig": {
+      "description": "Read-only saved compiled configuration, including default tools and derived subagent overrides.",
+      "properties": {
+        "gitCredentials": {
+          "$ref": "#/types/omnara:index:CompiledGitCredentials",
+          "description": "Pinned GitHub integration supplying machine Git credentials, optionally limited to repositories and read-only access."
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "interactionHandlers": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:CompiledIntegrationCapability"
+          }
+        },
+        "machineSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:CompiledMachineSource"
+          }
+        },
+        "maxDepth": {
+          "type": "integer"
+        },
+        "maxSubagents": {
+          "type": "integer"
+        },
+        "mcp": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:CompiledMCPServer"
+          }
+        },
+        "memoryStores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:CompiledMemoryStore"
+          }
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:CompiledAgentModel"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:CompiledSkill"
+          }
+        },
+        "subagents": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/types/omnara:index:CompiledSelfSubagent"
+              },
+              {
+                "$ref": "#/types/omnara:index:CompiledProfileSubagent"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "profile": "#/types/omnara:index:CompiledProfileSubagent",
+                "self": "#/types/omnara:index:CompiledSelfSubagent"
+              }
+            }
+          }
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:CompiledTool"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "instruction",
+        "model"
+      ]
+    },
+    "omnara:index:CompiledAgentModel": {
+      "properties": {
+        "cacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "configuredModelId": {
+          "type": "string"
+        },
+        "contextWindowTokens": {
+          "type": "integer"
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer"
+        },
+        "reasoning": {
+          "$ref": "#/types/omnara:index:CompiledModelReasoning"
+        }
+      },
+      "type": "object",
+      "required": [
+        "configuredModelId"
+      ]
+    },
+    "omnara:index:CompiledGitCredentials": {
+      "description": "Pinned GitHub integration supplying machine Git credentials, optionally limited to repositories and read-only access.",
+      "properties": {
+        "integration": {
+          "type": "string",
+          "description": "Immutable, project-unique integration name used in config keys and qualified tool names."
+        },
+        "integrationId": {
+          "type": "string"
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
+        "repositoryIds": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "integration",
+        "integrationId"
+      ]
+    },
+    "omnara:index:CompiledIntegrationCapability": {
+      "properties": {
+        "integrationId": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "integrationId"
+      ]
+    },
+    "omnara:index:CompiledMCPAuthBearer": {
+      "properties": {
+        "secretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "secretId",
+        "type"
+      ]
+    },
+    "omnara:index:CompiledMCPAuthOAuth": {
+      "properties": {
+        "secretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "secretId",
+        "type"
+      ]
+    },
+    "omnara:index:CompiledMCPAuthSigV4": {
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "secretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "service": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "region",
+        "secretId",
+        "service",
+        "type"
+      ]
+    },
+    "omnara:index:CompiledMCPServer": {
+      "properties": {
+        "auth": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:CompiledMCPAuthBearer"
+            },
+            {
+              "$ref": "#/types/omnara:index:CompiledMCPAuthOAuth"
+            },
+            {
+              "$ref": "#/types/omnara:index:CompiledMCPAuthSigV4"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "bearer": "#/types/omnara:index:CompiledMCPAuthBearer",
+              "oauth": "#/types/omnara:index:CompiledMCPAuthOAuth",
+              "sigv4": "#/types/omnara:index:CompiledMCPAuthSigV4"
+            }
+          }
+        },
+        "defaultEnabled": {
+          "type": "boolean"
+        },
+        "deferred": {
+          "type": "boolean"
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:ToolPermissionSelection"
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:CompiledMCPTool"
+          }
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "defaultEnabled",
+        "permission",
+        "url"
+      ]
+    },
+    "omnara:index:CompiledMCPTool": {
+      "properties": {
+        "deferred": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:ToolPermissionSelection"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:CompiledMachineSource": {
+      "properties": {
+        "cwd": {
+          "type": "string"
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "envOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "initialNumMachines": {
+          "type": "integer"
+        },
+        "machineCpu": {
+          "type": "integer"
+        },
+        "machineId": {
+          "type": "string",
+          "description": "Machine ID (mch_...)."
+        },
+        "machineMemoryMb": {
+          "type": "integer"
+        },
+        "machinePoolId": {
+          "type": "string",
+          "description": "Machine pool ID (mpo_...)."
+        },
+        "machineProviderOptionsOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "maxMachines": {
+          "type": "integer"
+        },
+        "secretEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:CompiledMemoryStore": {
+      "properties": {
+        "access": {
+          "type": "string",
+          "description": "Allowed values: `read`, `read_write`."
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "access",
+        "id"
+      ]
+    },
+    "omnara:index:CompiledModelReasoning": {
+      "properties": {
+        "effort": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "effort"
+      ]
+    },
+    "omnara:index:CompiledProfileSubagent": {
+      "properties": {
+        "archiveAfterIdleMinutes": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "instructionAppend": {
+          "type": "string"
+        },
+        "maxInstances": {
+          "type": "integer"
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:CompiledSubagentModel"
+        },
+        "profileId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "profileId",
+        "type"
+      ]
+    },
+    "omnara:index:CompiledSelfSubagent": {
+      "properties": {
+        "archiveAfterIdleMinutes": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "instructionAppend": {
+          "type": "string"
+        },
+        "maxInstances": {
+          "type": "integer"
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:CompiledSubagentModel"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ]
+    },
+    "omnara:index:CompiledSkill": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id"
+      ]
+    },
+    "omnara:index:CompiledSubagentModel": {
+      "properties": {
+        "cacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "configuredModelId": {
+          "type": "string"
+        },
+        "contextWindowTokens": {
+          "type": "integer"
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer"
+        },
+        "reasoning": {
+          "$ref": "#/types/omnara:index:CompiledModelReasoning"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:CompiledTool": {
+      "properties": {
+        "deferred": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "integrationId": {
+          "type": "string"
+        },
+        "permission": {
+          "$ref": "#/types/omnara:index:ToolPermissionSelection"
+        },
+        "type": {
+          "type": "string",
+          "description": "Allowed values: `built_in`, `custom`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "enabled",
+        "permission"
+      ]
+    },
+    "omnara:index:CronTriggerFailureReport": {
+      "properties": {
+        "failedAt": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "description": "Why the most recent failed firing did not deliver a message."
+        },
+        "willRetry": {
+          "type": "boolean",
+          "description": "Whether the firing will be retried after the claim lease expires."
+        }
+      },
+      "type": "object",
+      "required": [
+        "failedAt",
+        "message",
+        "willRetry"
+      ]
+    },
+    "omnara:index:CronTriggerLastRun": {
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "failureMessage": {
+          "type": "string",
+          "description": "Coarse scheduled action failure description; no raw provider errors."
+        },
+        "state": {
+          "type": "string",
+          "description": "State of the latest accepted scheduled integration action. Completed means the integration handled the occurrence; it does not indicate completion of any agent task that action started. Allowed values: `queued`, `processing`, `completed`, `failed`."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "state",
+        "updatedAt"
+      ]
+    },
+    "omnara:index:CurrentUserIdentity": {
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's primary verified email, or an empty string if none."
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "displayName",
+        "email",
+        "id"
+      ]
+    },
+    "omnara:index:CurrentUserOrg": {
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "description": "Organization creation timestamp, not the membership join timestamp."
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "role": {
+          "type": "string",
+          "description": "The authenticated user's role in this organization."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "id",
+        "name",
+        "role"
+      ]
+    },
+    "omnara:index:DirectSecretAvailability": {
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "projectId",
+        "source"
+      ]
+    },
+    "omnara:index:DirectSkillAvailability": {
+      "properties": {
+        "source": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "source"
+      ]
+    },
+    "omnara:index:DiscoveredModelPricing": {
+      "description": "Provider-advertised list prices in USD per million tokens, as exact decimal strings. Present only when the provider publishes pricing in its model catalog (OpenRouter). Cache prices are omitted when the provider does not publish them.",
+      "properties": {
+        "cacheReadInputUsdPerMillion": {
+          "type": "string"
+        },
+        "cacheWriteInputUsdPerMillion": {
+          "type": "string"
+        },
+        "inputUsdPerMillion": {
+          "type": "string"
+        },
+        "outputUsdPerMillion": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "inputUsdPerMillion",
+        "outputUsdPerMillion"
+      ]
+    },
+    "omnara:index:DiscoveredProviderModel": {
+      "properties": {
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Provider-advertised context window limit in tokens, when available."
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Provider-advertised maximum output limit in tokens, when available."
+        },
+        "pricing": {
+          "$ref": "#/types/omnara:index:DiscoveredModelPricing",
+          "description": "Provider-advertised list prices in USD per million tokens, as exact decimal strings. Present only when the provider publishes pricing in its model catalog (OpenRouter). Cache prices are omitted when the provider does not publish them."
+        },
+        "slug": {
+          "type": "string",
+          "description": "Provider model slug usable as a configured model's provider_model_slug."
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Reasoning effort values the model accepts, when reported."
+        },
+        "supportsReasoning": {
+          "type": "boolean",
+          "description": "Whether Omnara can send this model a reasoning effort, when the provider or the public model catalog reports it."
+        }
+      },
+      "type": "object",
+      "required": [
+        "slug"
+      ]
+    },
+    "omnara:index:GenericSecretMaterial": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "value"
+      ]
+    },
+    "omnara:index:GitHubAppCredentialsSecretMaterial": {
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "privateKey": {
+          "type": "string",
+          "description": "Unencrypted RSA private key in PEM format. Stored encrypted.",
+          "secret": true
+        },
+        "webhookSecret": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "appId",
+        "kind",
+        "privateKey",
+        "webhookSecret"
+      ]
+    },
+    "omnara:index:GrantedSecretAvailability": {
+      "properties": {
+        "grantId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "grantId",
+        "projectId",
+        "source"
+      ]
+    },
+    "omnara:index:GrantedSkillAvailability": {
+      "properties": {
+        "grantId": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "grantId",
+        "source"
+      ]
+    },
+    "omnara:index:IntegrationCapabilities": {
+      "properties": {
+        "interactionHandler": {
+          "$ref": "#/types/omnara:index:IntegrationCapabilityDefinition"
+        },
+        "schedule": {
+          "$ref": "#/types/omnara:index:IntegrationCapabilityDefinition"
+        },
+        "settings": {
+          "$ref": "#/types/omnara:index:IntegrationCapabilityDefinition",
+          "description": "Schema for this integration's complete settings document, including its optional launcher."
+        },
+        "subscription": {
+          "$ref": "#/types/omnara:index:IntegrationSubscriptionDefinition",
+          "description": "Present when the integration supports forwarding from a conversation. The integration owns forwarding policy."
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/types/omnara:index:IntegrationCapabilityDefinition"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "tools"
+      ]
+    },
+    "omnara:index:IntegrationCapabilityDefinition": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Static argument schema for this operation or interaction handler. Shipped integration tools accept action arguments and use the conversation assigned at launch; execution fails if no conversation is assigned. Shipped interaction handlers use the assigned conversation and accept empty arguments."
+        }
+      },
+      "type": "object",
+      "required": [
+        "inputSchema"
+      ]
+    },
+    "omnara:index:IntegrationCronTriggerTarget": {
+      "properties": {
+        "integrationId": {
+          "type": "string"
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Settings validated by the target integration's published schedule input schema. Each accepted occurrence retains its own copy. Integration resource references are resolved when the integration handles the occurrence."
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "integrationId",
+        "settings",
+        "type"
+      ]
+    },
+    "omnara:index:IntegrationDefinition": {
+      "properties": {
+        "capabilities": {
+          "$ref": "#/types/omnara:index:IntegrationCapabilities"
+        },
+        "integrationKind": {
+          "type": "string",
+          "description": "Registered integration implementation; independent of the saved integration's name and immutable ID. Allowed values: `slack_thread`, `discord_thread`, `github_pr`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "capabilities",
+        "integrationKind"
+      ]
+    },
+    "omnara:index:IntegrationRuntimeFailure": {
+      "description": "Most recent connection failure for the active integration's current setup and credential version. Returned only by Get integration, not list or mutation responses. Omission does not establish provider connectivity; a runtime lease is not a connection check.",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Connection failure recorded by the integration runtime."
+        },
+        "retryAt": {
+          "type": "string",
+          "description": "Earliest time the runtime may retry. A retry can start later."
+        }
+      },
+      "type": "object",
+      "required": [
+        "message",
+        "retryAt"
+      ]
+    },
+    "omnara:index:IntegrationSubscriptionDefinition": {
+      "properties": {
+        "conversationSchema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Schema for one concrete provider conversation address."
+        }
+      },
+      "type": "object",
+      "required": [
+        "conversationSchema"
+      ]
+    },
+    "omnara:index:MachineAccess": {
+      "properties": {
+        "canManage": {
+          "type": "boolean"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:MachineAccessSource"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "canManage",
+        "sources"
+      ]
+    },
+    "omnara:index:MachineAccessSource": {
+      "properties": {
+        "grantId": {
+          "type": "string"
+        },
+        "grantSourceKind": {
+          "type": "string",
+          "description": "Allowed values: `explicit`, `pool`."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Allowed values: `org_role`, `project_machine_grant`."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:MachineFailureReport": {
+      "description": "The machine's most recent daemon-reported failure. A single slot, overwritten by newer reports. Runtime crash reports remain as historical diagnostics; recovery may clear other failure stages.",
+      "properties": {
+        "daemonVersion": {
+          "type": "string"
+        },
+        "exitStatus": {
+          "type": "integer"
+        },
+        "outputTail": {
+          "type": "string"
+        },
+        "outputTruncated": {
+          "type": "boolean"
+        },
+        "reportedAt": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string",
+          "description": "Allowed values: `startup_script`, `daemon_install`, `daemon_update`, `daemon_runtime`, `daemon_uninstall`, `daemon_uninstalled`."
+        },
+        "targetVersion": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "outputTail",
+        "outputTruncated",
+        "reportedAt",
+        "stage"
+      ]
+    },
+    "omnara:index:MachinePoolUsage": {
+      "properties": {
+        "cpu": {
+          "type": "integer"
+        },
+        "machines": {
+          "type": "integer"
+        },
+        "memoryMb": {
+          "type": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "cpu",
+        "machines",
+        "memoryMb"
+      ]
+    },
+    "omnara:index:ModelProviderConfigAuthOptions": {
+      "description": "Non-secret authentication settings. Use an empty object with bearer_token. With api_key_header, set {\"header_name\":\"...\"}; Anthropic Messages defaults to {\"header_name\":\"x-api-key\"}. With sigv4, set the AWS signing service and region.",
+      "properties": {
+        "headerName": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "omnara:index:OAuthRefreshSecretMaterial": {
+      "properties": {
+        "clientId": {
+          "type": "string"
+        },
+        "clientSecret": {
+          "type": "string",
+          "secret": true
+        },
+        "refreshToken": {
+          "type": "string",
+          "secret": true
+        },
+        "resource": {
+          "type": "string"
+        },
+        "tokenEndpoint": {
+          "type": "string",
+          "description": "Must use HTTPS, except that HTTP is allowed for loopback hosts during local development."
+        }
+      },
+      "type": "object",
+      "required": [
+        "clientId",
+        "refreshToken",
+        "resource",
+        "tokenEndpoint"
+      ]
+    },
+    "omnara:index:OAuthTokenSetSecretMaterial": {
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "secret": true
+        },
+        "accessTokenExpiresInSeconds": {
+          "type": "integer"
+        },
+        "idToken": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "mcpUrl": {
+          "type": "string"
+        },
+        "refresh": {
+          "$ref": "#/types/omnara:index:OAuthRefreshSecretMaterial"
+        },
+        "scopes": {
+          "type": "string"
+        },
+        "tokenType": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "accessToken",
+        "kind"
+      ]
+    },
+    "omnara:index:OrgSecretOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:OrgSecretOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:OrgSkillOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:OrgSkillOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:ProjectAccess": {
+      "properties": {
+        "canManage": {
+          "type": "boolean"
+        },
+        "canManageAccess": {
+          "type": "boolean"
+        },
+        "canOperate": {
+          "type": "boolean"
+        },
+        "canRead": {
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "required": [
+        "canManage",
+        "canManageAccess",
+        "canOperate",
+        "canRead"
+      ]
+    },
+    "omnara:index:ProjectEventWebhookScope": {
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ]
+    },
+    "omnara:index:ProjectSecretAccess": {
+      "properties": {
+        "availability": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:DirectSecretAvailability"
+            },
+            {
+              "$ref": "#/types/omnara:index:GrantedSecretAvailability"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "source",
+            "mapping": {
+              "direct": "#/types/omnara:index:DirectSecretAvailability",
+              "grant": "#/types/omnara:index:GrantedSecretAvailability"
+            }
+          }
+        },
+        "secret": {
+          "$ref": "#/types/omnara:index:SecretDetails"
+        }
+      },
+      "type": "object",
+      "required": [
+        "availability",
+        "secret"
+      ]
+    },
+    "omnara:index:ProjectSecretOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectSecretOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectSkillAccess": {
+      "properties": {
+        "availability": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:DirectSkillAvailability"
+            },
+            {
+              "$ref": "#/types/omnara:index:GrantedSkillAvailability"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "source",
+            "mapping": {
+              "direct": "#/types/omnara:index:DirectSkillAvailability",
+              "grant": "#/types/omnara:index:GrantedSkillAvailability"
+            }
+          }
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "skill": {
+          "$ref": "#/types/omnara:index:SkillDetails"
+        }
+      },
+      "type": "object",
+      "required": [
+        "availability",
+        "projectId",
+        "skill"
+      ]
+    },
+    "omnara:index:ProjectSkillOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectSkillOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "projectId"
+      ]
+    },
+    "omnara:index:SecretDetails": {
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "currentVersionNumber": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Allowed values: `generic`, `oauth_token_set`, `slack_app_credentials`, `aws_credentials`, `github_app_credentials`."
+        },
+        "managementKind": {
+          "type": "string",
+          "description": "Lifecycle owner. Tenant-managed resources can be changed through tenant APIs. Cluster-managed resources are installed and lifecycle-managed by the control plane; individual APIs may explicitly expose tenant-editable settings. Allowed values: `tenant`, `cluster`."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSecretOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSecretOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSecretOwner"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSecretOwner",
+              "project": "#/types/omnara:index:ProjectSecretOwner",
+              "user": "#/types/omnara:index:UserSecretOwner"
+            }
+          }
+        },
+        "payloadKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "currentVersionNumber",
+        "id",
+        "kind",
+        "managementKind",
+        "metadata",
+        "name",
+        "orgId",
+        "owner",
+        "payloadKeys",
+        "updatedAt"
+      ]
+    },
+    "omnara:index:SkillDetails": {
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:SkillFile"
+          },
+          "description": "Files in the skill archive, including SKILL.md, with paths relative to the skill's top-level directory. Returned when fetching a single skill; omitted from list responses."
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Machine-readable skill identifier consisting of lowercase ASCII segments separated by single hyphens."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSkillOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSkillOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSkillOwner"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSkillOwner",
+              "project": "#/types/omnara:index:ProjectSkillOwner",
+              "user": "#/types/omnara:index:UserSkillOwner"
+            }
+          }
+        },
+        "revision": {
+          "type": "integer",
+          "description": "Latest revision number of the skill."
+        },
+        "revisionId": {
+          "type": "string"
+        },
+        "skillMd": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "description",
+        "id",
+        "name",
+        "orgId",
+        "owner",
+        "revision",
+        "revisionId",
+        "updatedAt"
+      ]
+    },
+    "omnara:index:SkillFile": {
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "path",
+        "size"
+      ]
+    },
+    "omnara:index:ToolCatalogEntry": {
+      "properties": {
+        "defaultPermission": {
+          "$ref": "#/types/omnara:index:ToolPermissionSelection"
+        },
+        "description": {
+          "type": "string"
+        },
+        "implicit": {
+          "type": "boolean",
+          "description": "Whether this tool supports implicit inclusion based on config resources or integration context, even when explicitly configured."
+        },
+        "name": {
+          "type": "string"
+        },
+        "permissionModes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:ToolPermissionMode"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "defaultPermission",
+        "description",
+        "name",
+        "permissionModes"
+      ]
+    },
+    "omnara:index:ToolPermissionMode": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parametersSchema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "description",
+        "label",
+        "name",
+        "parametersSchema"
+      ]
+    },
+    "omnara:index:ToolPermissionProfile": {
+      "properties": {
+        "defaultPermission": {
+          "$ref": "#/types/omnara:index:ToolPermissionSelection"
+        },
+        "permissionModes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:ToolPermissionMode"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "defaultPermission",
+        "permissionModes"
+      ]
+    },
+    "omnara:index:ToolPermissionSelection": {
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        }
+      },
+      "type": "object",
+      "required": [
+        "mode",
+        "parameters"
+      ]
+    },
+    "omnara:index:UserSecretOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "userId"
+      ]
+    },
+    "omnara:index:UserSecretOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:UserSkillOwner": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind",
+        "userId"
+      ]
+    },
+    "omnara:index:UserSkillOwnerInput": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "kind"
+      ]
+    },
+    "omnara:index:VisibleMachine": {
+      "properties": {
+        "access": {
+          "$ref": "#/types/omnara:index:MachineAccess"
+        },
+        "connectionState": {
+          "type": "string",
+          "description": "Allowed values: `online`, `asleep`, `offline`."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "deletedAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "id": {
+          "type": "string",
+          "description": "Machine ID (mch_...)."
+        },
+        "lastObservedAt": {
+          "type": "string"
+        },
+        "lifecycleState": {
+          "type": "string",
+          "description": "Allowed values: `provisioning`, `provision_failed`, `active`, `deleting`, `delete_failed`, `deleted`."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "type": "string",
+          "description": "Allowed values: `byo`, `pool`."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "access",
+        "connectionState",
+        "createdAt",
+        "description",
+        "displayName",
+        "id",
+        "lifecycleState",
+        "orgId",
+        "provider",
+        "sourceKind",
+        "updatedAt"
+      ]
+    },
+    "omnara:index:VisibleProject": {
+      "properties": {
+        "access": {
+          "$ref": "#/types/omnara:index:ProjectAccess"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "access",
+        "createdAt",
+        "id",
+        "name",
+        "orgId",
+        "updatedAt"
+      ]
+    }
+  },
+  "provider": {
+    "description": "The provider type for the Omnara package.",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "An Omnara personal access token or organization API key. Can also be set with the `OMNARA_API_KEY` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_KEY"
+          ]
+        },
+        "secret": true
+      },
+      "apiUrl": {
+        "type": "string",
+        "description": "Base URL of the Omnara API, including the version path. Defaults to https://api.omnara.com/v1. For a self-hosted deployment use `<origin>/api/v1`. Can also be set with the `OMNARA_API_URL` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_URL"
+          ]
+        }
+      },
+      "orgId": {
+        "type": "string",
+        "description": "Default organization ID for resources and functions that don't set `orgId`. Can also be set with the `OMNARA_ORG_ID` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_ORG_ID"
+          ]
+        }
+      }
+    },
+    "type": "object",
+    "inputProperties": {
+      "apiKey": {
+        "type": "string",
+        "description": "An Omnara personal access token or organization API key. Can also be set with the `OMNARA_API_KEY` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_KEY"
+          ]
+        },
+        "secret": true
+      },
+      "apiUrl": {
+        "type": "string",
+        "description": "Base URL of the Omnara API, including the version path. Defaults to https://api.omnara.com/v1. For a self-hosted deployment use `<origin>/api/v1`. Can also be set with the `OMNARA_API_URL` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_API_URL"
+          ]
+        }
+      },
+      "orgId": {
+        "type": "string",
+        "description": "Default organization ID for resources and functions that don't set `orgId`. Can also be set with the `OMNARA_ORG_ID` environment variable.",
+        "defaultInfo": {
+          "environment": [
+            "OMNARA_ORG_ID"
+          ]
+        }
+      }
+    }
+  },
+  "resources": {
+    "omnara:index:AgentConfig": {
+      "description": "An immutable agent config compiled from YAML or JSON source. Any change creates a new config. Omnara has no delete operation for configs, so deleting the resource only removes it from the stack.",
+      "properties": {
+        "compiledDefinition": {
+          "$ref": "pulumi.json#/Any",
+          "description": "Read-only saved compiled configuration, including default tools and derived subagent overrides."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "effectiveDefinitionHash": {
+          "type": "string"
+        },
+        "instructionHash": {
+          "type": "string"
+        },
+        "model": {
+          "$ref": "#/types/omnara:index:AgentConfigModel"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "source": {
+          "type": "string",
+          "description": "Saved source text, exactly as sent."
+        },
+        "sourceFormat": {
+          "type": "string",
+          "description": "Allowed values: `yaml`, `json`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "compiledDefinition",
+        "createdAt",
+        "effectiveDefinitionHash",
+        "model",
+        "orgId",
+        "projectId"
+      ],
+      "inputProperties": {
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentConfigDefinition"
+            }
+          ],
+          "description": "Agent config source as YAML or JSON text, or, with source_format json, as a JSON object.",
+          "replaceOnChanges": true
+        },
+        "sourceFormat": {
+          "type": "string",
+          "description": "Format of source: yaml or json. Allowed values: `yaml`, `json`.",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "projectId",
+        "source",
+        "sourceFormat"
+      ]
+    },
+    "omnara:index:AgentProfile": {
+      "description": "A named, reusable launch profile that points at an agent config. Changing `configId` moves the profile to the new config.",
+      "properties": {
+        "configId": {
+          "type": "string",
+          "description": "Agent config ID (acfg_...)."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "currentConfigId": {
+          "type": "string",
+          "description": "Agent config ID (acfg_...)."
+        },
+        "currentGeneration": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "configId",
+        "createdAt",
+        "currentConfigId",
+        "currentGeneration",
+        "name",
+        "orgId",
+        "projectId",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "configId": {
+          "type": "string",
+          "description": "Agent config ID (acfg_...)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "configId",
+        "name",
+        "projectId"
+      ]
+    },
+    "omnara:index:ConfiguredModel": {
+      "description": "Adds a provider model to this provider config under the name agent configs use as model.name, and returns it. The model slug isn't checked against the provider's catalog, and no project can use the model yet.",
+      "properties": {
+        "apiVariantOptions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Extra top-level JSON fields to include in provider requests for this configured model. Use this for provider-specific settings that Omnara does not expose as typed fields, such as OpenRouter `provider` routing or sampling parameters. Omnara still controls the fields it needs to run the agent correctly, including the model, prompt/messages, streaming, tools, output-token limit, and selected reasoning policy. Provider passthrough values for those fields are ignored. For OpenRouter routing options, see https://openrouter.ai/docs/guides/routing/provider-selection and general request parameters at https://openrouter.ai/docs/api/reference/parameters. Omnara-managed OpenRouter providers accept only sampling, reasoning, and per-model routing options here."
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Context budget for input and output tokens. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "currentRevisionId": {
+          "type": "string"
+        },
+        "defaultCacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer",
+          "description": "Default per-request output-token cap sent to the provider unless an agent config overrides it."
+        },
+        "defaultReasoningEffort": {
+          "type": "string",
+          "description": "Default reasoning effort to send for models/API formats that support effort-style reasoning controls."
+        },
+        "inputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Input types this configured model accepts. Omnara recognizes text, image, and file; an empty list leaves capabilities unspecified."
+        },
+        "managementKind": {
+          "type": "string",
+          "description": "Lifecycle owner. Tenant-managed resources can be changed through tenant APIs. Cluster-managed resources are installed and lifecycle-managed by the control plane; individual APIs may explicitly expose tenant-editable settings. Allowed values: `tenant`, `cluster`."
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Known output-token ceiling for this model, or null when unknown."
+        },
+        "modelProviderConfigId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "User-assigned configured model name used by agent YAML as model.name."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "outputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Output types this configured model can return."
+        },
+        "providerModelSlug": {
+          "type": "string",
+          "description": "Exact provider model slug sent to the provider endpoint by the current revision."
+        },
+        "revisionCreatedAt": {
+          "type": "string"
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Reasoning effort values this configured model accepts."
+        },
+        "supportsReasoning": {
+          "type": "boolean",
+          "description": "Whether Omnara should use this model's reasoning features."
+        },
+        "supportsTools": {
+          "type": "boolean",
+          "description": "Whether this configured model can receive tool definitions and emit tool calls."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "apiVariantOptions",
+        "contextWindowTokens",
+        "createdAt",
+        "currentRevisionId",
+        "defaultReasoningEffort",
+        "inputModalities",
+        "managementKind",
+        "modelProviderConfigId",
+        "name",
+        "orgId",
+        "outputModalities",
+        "providerModelSlug",
+        "revisionCreatedAt",
+        "supportedReasoningEfforts",
+        "supportsReasoning",
+        "supportsTools",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "apiVariantOptions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Extra top-level JSON fields to include in provider requests for this configured model. Use this for provider-specific settings that Omnara does not expose as typed fields, such as OpenRouter `provider` routing or sampling parameters. Omnara still controls the fields it needs to run the agent correctly, including the model, prompt/messages, streaming, tools, output-token limit, and selected reasoning policy. Provider passthrough values for those fields are ignored. For OpenRouter routing options, see https://openrouter.ai/docs/guides/routing/provider-selection and general request parameters at https://openrouter.ai/docs/api/reference/parameters. Omnara-managed OpenRouter providers accept only sampling, reasoning, and per-model routing options here."
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Context budget for input and output tokens. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "defaultCacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer",
+          "description": "Optional normal per-request output allowance. Discovery never populates this field. When omitted, requests use the known output ceiling. If both are absent, Messages uses 64000 tokens; other formats omit the allowance. Runtime allowances are fitted to available context."
+        },
+        "defaultReasoningEffort": {
+          "type": "string",
+          "description": "Default reasoning effort to send for models/API formats that support effort-style reasoning controls. Requires supports_reasoning=true. When supported_reasoning_efforts is present, this value must be listed there."
+        },
+        "inputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Input types this configured model accepts. Omnara recognizes text, image, and file; an empty list leaves capabilities unspecified."
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Optional known output-token ceiling. Omitted capacity remains unknown; selecting a discovered model can supply its published ceiling. Explicit values must not exceed the provider's supported limit."
+        },
+        "modelProviderConfigId": {
+          "type": "string",
+          "description": "Model provider config ID (mpc_...).",
+          "replaceOnChanges": true
+        },
+        "name": {
+          "type": "string",
+          "description": "User-assigned configured model name used by agent YAML as model.name. Names are unique within an active model provider config and can be renamed without changing existing agents."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "outputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Output types this configured model can return. Omnara currently consumes text output."
+        },
+        "providerModelSlug": {
+          "type": "string",
+          "description": "Exact provider model slug sent to the provider endpoint. Free-pool, `:online`, and preset model ids are not accepted on Omnara-managed OpenRouter providers."
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Reasoning effort values this configured model accepts. Requires supports_reasoning=true when non-empty."
+        },
+        "supportsReasoning": {
+          "type": "boolean",
+          "description": "Whether Omnara should use this model's reasoning features. For OpenAI Responses, this also enables encrypted reasoning replay for stateless calls.",
+          "default": false
+        },
+        "supportsTools": {
+          "type": "boolean",
+          "description": "Whether this configured model can receive tool definitions and emit tool calls. Agent configs with enabled tools are rejected when this is false.",
+          "default": true
+        }
+      },
+      "requiredInputs": [
+        "contextWindowTokens",
+        "modelProviderConfigId",
+        "name",
+        "providerModelSlug"
+      ]
+    },
+    "omnara:index:CronTrigger": {
+      "description": "Creates a cron trigger that fires on a schedule. A trigger targeting an agent profile launches a new agent from the profile's current config on each firing; a trigger targeting an agent sends an input to that agent. Missed firings are coalesced, matching standard cron behavior: if one or more scheduled times pass while firing is delayed, the trigger fires once for the oldest missed time and then resumes its schedule from the current time, without retroactively firing for the other missed times.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "cron": {
+          "type": "string",
+          "description": "Standard five-field cron expression (minute, hour, day of month, month, day of week). `TZ=`/`CRON_TZ=` prefixes are rejected; set the `timezone` field instead."
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "failureReport": {
+          "$ref": "#/types/omnara:index:CronTriggerFailureReport",
+          "description": "Most recent failed firing, or null if no firing has failed since the last successful firing."
+        },
+        "lastFiredAt": {
+          "type": "string",
+          "description": "When the trigger last fired, or null if it has never fired. For integration targets this means durable inbox handoff."
+        },
+        "lastRun": {
+          "$ref": "#/types/omnara:index:CronTriggerLastRun",
+          "description": "Status of the latest accepted scheduled integration launch, scoped to this project and integration. Null for ordinary cron, before any launch is accepted, or when retained details have expired. Never falls back to an older launch. Schedule firing failures remain separate in failure_report. Deleting or disabling a schedule does not cancel launch work already accepted by the integration."
+        },
+        "messageTemplate": {
+          "type": "string",
+          "description": "Go text/template rendered on each firing to produce the message sent to the target. The template receives a `trigger` value with `name`, `fired_at`, `last_fired_at`, and `local_date` fields. Timestamps remain UTC; local_date is the scheduled occurrence's ISO date in the schedule timezone. Required for agent and profile targets; omitted for integration targets, which use their own settings. Rendering is capped at 64 KiB of output and one second of wall-clock time, and `printf` width and precision specifiers are capped at 1024; a firing whose template fails to render is recorded in `failure_report` without sending a message."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "nextFireAt": {
+          "type": "string",
+          "description": "Next scheduled firing, or null while the trigger is disabled."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "target": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:AgentCronTriggerTarget"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentProfileCronTriggerTarget"
+            },
+            {
+              "$ref": "#/types/omnara:index:IntegrationCronTriggerTarget"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "agent": "#/types/omnara:index:AgentCronTriggerTarget",
+              "integration": "#/types/omnara:index:IntegrationCronTriggerTarget",
+              "profile": "#/types/omnara:index:AgentProfileCronTriggerTarget"
+            }
+          },
+          "description": "What each firing does: type agent sends the message to an existing agent, type profile launches a new agent from a profile, and type integration hands the firing to an integration, such as a new Slack or Discord thread."
+        },
+        "timezone": {
+          "type": "string",
+          "description": "IANA time zone the schedule is evaluated in."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "cron",
+        "enabled",
+        "name",
+        "orgId",
+        "projectId",
+        "target",
+        "timezone",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "cron": {
+          "type": "string",
+          "description": "Standard five-field cron expression (minute, hour, day of month, month, day of week). `TZ=`/`CRON_TZ=` prefixes are rejected; set the `timezone` field instead."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the trigger fires on schedule; false pauses it.",
+          "default": true
+        },
+        "messageTemplate": {
+          "type": "string",
+          "description": "Go text/template rendered on each firing to produce the message sent to the target. The template receives a `trigger` value with `name`, `fired_at`, `last_fired_at`, and `local_date` fields. Timestamps remain UTC; local_date is the scheduled occurrence's ISO date in the schedule timezone. Required for agent and profile targets; omitted for integration targets, which use their own settings. Rendering is capped at 64 KiB of output and one second of wall-clock time, and `printf` width and precision specifiers are capped at 1024; a firing whose template fails to render is recorded in `failure_report` without sending a message."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        },
+        "target": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:AgentCronTriggerTarget"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentProfileCronTriggerTarget"
+            },
+            {
+              "$ref": "#/types/omnara:index:IntegrationCronTriggerTarget"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "agent": "#/types/omnara:index:AgentCronTriggerTarget",
+              "integration": "#/types/omnara:index:IntegrationCronTriggerTarget",
+              "profile": "#/types/omnara:index:AgentProfileCronTriggerTarget"
+            }
+          },
+          "description": "What each firing does: type agent sends the message to an existing agent, type profile launches a new agent from a profile, and type integration hands the firing to an integration, such as a new Slack or Discord thread."
+        },
+        "timezone": {
+          "type": "string",
+          "description": "IANA time zone the schedule is evaluated in."
+        }
+      },
+      "requiredInputs": [
+        "cron",
+        "name",
+        "projectId",
+        "target"
+      ]
+    },
+    "omnara:index:EventWebhook": {
+      "description": "An event webhook. Imports find project-scoped webhooks only, because listing agent-profile or agent webhooks needs the scope's ID.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "eventTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "scope": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:ProjectEventWebhookScope"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentProfileEventWebhookScope"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentEventWebhookScope"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "agent": "#/types/omnara:index:AgentEventWebhookScope",
+              "profile": "#/types/omnara:index:AgentProfileEventWebhookScope",
+              "project": "#/types/omnara:index:ProjectEventWebhookScope"
+            }
+          }
+        },
+        "signingSecretId": {
+          "type": "string",
+          "description": "Optional project-available generic secret."
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "description": "Public HTTPS endpoint, at most 2048 bytes after URL encoding."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "eventTypes",
+        "orgId",
+        "projectId",
+        "scope",
+        "updatedAt",
+        "url"
+      ],
+      "inputProperties": {
+        "eventTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "orgId": {
+          "type": "string",
+          "description": "The org ID this resource belongs to. Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "The project ID this resource belongs to.",
+          "replaceOnChanges": true
+        },
+        "scope": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:ProjectEventWebhookScope"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentProfileEventWebhookScope"
+            },
+            {
+              "$ref": "#/types/omnara:index:AgentEventWebhookScope"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "agent": "#/types/omnara:index:AgentEventWebhookScope",
+              "profile": "#/types/omnara:index:AgentProfileEventWebhookScope",
+              "project": "#/types/omnara:index:ProjectEventWebhookScope"
+            }
+          },
+          "replaceOnChanges": true
+        },
+        "signingSecretId": {
+          "type": "string",
+          "description": "Optional project-available generic secret."
+        },
+        "url": {
+          "type": "string",
+          "description": "Public HTTPS endpoint, at most 2048 bytes after URL encoding."
+        }
+      },
+      "requiredInputs": [
+        "eventTypes",
+        "projectId",
+        "scope",
+        "url"
+      ]
+    },
+    "omnara:index:Integration": {
+      "description": "A project integration. OAuth and app-installation setup flows still run in the Omnara dashboard; this resource manages the integration record and its settings.",
+      "properties": {
+        "botMention": {
+          "type": "string",
+          "description": "GitHub App mention including the leading @, derived from the verified App slug. Omitted when the verified slug is unavailable or the integration is not GitHub. Retained after disconnect."
+        },
+        "capabilities": {
+          "$ref": "#/types/omnara:index:IntegrationCapabilities"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "credentialSecretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "integrationKind": {
+          "type": "string",
+          "description": "Registered integration implementation; independent of the saved integration's name and immutable ID. Allowed values: `slack_thread`, `discord_thread`, `github_pr`."
+        },
+        "lastOauthFlowId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Immutable, project-unique integration name used in config keys and qualified tool names."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "providerAccountRef": {
+          "type": "string",
+          "description": "Verified provider account, omitted until first connection. Retained after disconnect."
+        },
+        "providerAgentDisplayName": {
+          "type": "string",
+          "description": "Provider account display label, at most 512 UTF-8 bytes. Leading and trailing whitespace is trimmed on save. Empty means no label; an omitted or empty value clears the label on account-management updates."
+        },
+        "providerConfig": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Non-secret provider configuration, validated for the selected provider. Slack and GitHub integrations require an empty object. Discord accepts only public_key (optional, a 32-byte hex-encoded Ed25519 verification key for interaction callbacks). Omnara manages one Gateway connection per Discord integration. Credentials and integration behavior are not accepted here."
+        },
+        "providerTenantId": {
+          "type": "string",
+          "description": "Verified provider identity, omitted until first connection. Retained after disconnect."
+        },
+        "runtimeFailure": {
+          "$ref": "#/types/omnara:index:IntegrationRuntimeFailure",
+          "description": "Most recent connection failure for the active integration's current setup and credential version. Returned only by Get integration, not list or mutation responses. Omission does not establish provider connectivity; a runtime lease is not a connection check."
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Integration-owned settings JSON. Validate against capabilities.settings.input_schema from the integration catalog. Public profile references use aprf_ IDs and resolve at runtime. GitHub integrations use GitHubIntegrationSettings; Slack and Discord integrations use ChatIntegrationSettings."
+        },
+        "setupRevision": {
+          "type": "integer",
+          "description": "Credential and transport revision. Launcher edits leave this value unchanged."
+        },
+        "state": {
+          "type": "string",
+          "description": "Allowed values: `active`, `disconnected`."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "capabilities",
+        "createdAt",
+        "integrationKind",
+        "name",
+        "orgId",
+        "projectId",
+        "providerAgentDisplayName",
+        "providerConfig",
+        "settings",
+        "setupRevision",
+        "state",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "integrationKind": {
+          "type": "string",
+          "description": "Registered integration implementation; independent of the saved integration's name and immutable ID. Allowed values: `slack_thread`, `discord_thread`, `github_pr`.",
+          "replaceOnChanges": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Immutable, project-unique integration name used in config keys and qualified tool names.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Integration-owned settings JSON. Validate against capabilities.settings.input_schema from the integration catalog. Public profile references use aprf_ IDs and resolve at runtime. GitHub integrations use GitHubIntegrationSettings; Slack and Discord integrations use ChatIntegrationSettings."
+        }
+      },
+      "requiredInputs": [
+        "integrationKind",
+        "name",
+        "projectId",
+        "settings"
+      ]
+    },
+    "omnara:index:IntegrationSubscription": {
+      "description": "Routes an integration conversation to an agent. Creating a subscription that already exists returns the existing one, so replacements delete the old subscription first.",
+      "properties": {
+        "agentId": {
+          "type": "string"
+        },
+        "agentName": {
+          "type": "string",
+          "description": "Agent name. Empty means the agent is unnamed; non-empty values use the ResourceName policy."
+        },
+        "conversation": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "One concrete provider address, validated by the integration's capabilities.subscription.conversation_schema. Slack uses channel_id and optional thread_ts; Discord uses channel_id for a channel or thread_id for a thread; GitHub uses repository_id and pull_request. Discord accepts optional parent channel_id and guild_id alongside thread_id and validates their ID format, but subscription creation does not verify them against Discord or retain them as routing restrictions. Only thread_id is retained in a canonical thread address and returned by create/list responses. No credentials or runtime state."
+        },
+        "conversationName": {
+          "type": "string",
+          "description": "Saved display name for the conversation, when available."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "integrationId": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentId",
+        "agentName",
+        "conversation",
+        "createdAt",
+        "integrationId",
+        "orgId",
+        "projectId"
+      ],
+      "inputProperties": {
+        "agentId": {
+          "type": "string",
+          "replaceOnChanges": true
+        },
+        "conversation": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "One concrete provider address, validated by the integration's capabilities.subscription.conversation_schema. Slack uses channel_id and optional thread_ts; Discord uses channel_id for a channel or thread_id for a thread; GitHub uses repository_id and pull_request. Discord accepts optional parent channel_id and guild_id alongside thread_id and validates their ID format, but subscription creation does not verify them against Discord or retain them as routing restrictions. Only thread_id is retained in a canonical thread address and returned by create/list responses. No credentials or runtime state.",
+          "replaceOnChanges": true
+        },
+        "integrationId": {
+          "type": "string",
+          "description": "Integration ID (itg_...).",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "agentId",
+        "conversation",
+        "integrationId",
+        "projectId"
+      ]
+    },
+    "omnara:index:Machine": {
+      "description": "A bring-your-own machine record. Pair it with a MachineDaemonToken and run the Omnara daemon on the host to connect it.",
+      "properties": {
+        "connectionState": {
+          "type": "string",
+          "description": "Allowed values: `online`, `asleep`, `offline`."
+        },
+        "connectionStateReason": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "deleteAttempts": {
+          "type": "integer"
+        },
+        "deletedAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "failureReport": {
+          "$ref": "#/types/omnara:index:MachineFailureReport",
+          "description": "The machine's most recent daemon-reported failure. A single slot, overwritten by newer reports. Runtime crash reports remain as historical diagnostics; recovery may clear other failure stages."
+        },
+        "lastObservedAt": {
+          "type": "string"
+        },
+        "lifecycleReasonCode": {
+          "type": "string"
+        },
+        "lifecycleReasonMessage": {
+          "type": "string"
+        },
+        "lifecycleState": {
+          "type": "string",
+          "description": "Allowed values: `provisioning`, `provision_failed`, `active`, `deleting`, `delete_failed`, `deleted`."
+        },
+        "machinePoolId": {
+          "type": "string",
+          "description": "Machine pool ID (mpo_...)."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "nextReconcileAfter": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "provisionAttempts": {
+          "type": "integer"
+        },
+        "secretEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "sourceKind": {
+          "type": "string",
+          "description": "Allowed values: `byo`, `pool`."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "connectionState",
+        "createdAt",
+        "cwd",
+        "deleteAttempts",
+        "description",
+        "displayName",
+        "env",
+        "lifecycleReasonCode",
+        "lifecycleReasonMessage",
+        "lifecycleState",
+        "metadata",
+        "orgId",
+        "provider",
+        "provisionAttempts",
+        "secretEnv",
+        "sourceKind",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "cwd": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "replaceOnChanges": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not.",
+          "replaceOnChanges": true
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "User-supplied metadata stored on a machine, provided directly or copied from the machine pool that provisions it. A restriction of Metadata that leaves room for one reserved pair - Omnara sets observed_platform on the machine to the platform reported by its daemon, so the key is reserved and at most 15 user pairs are accepted.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "secretEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "requiredInputs": [
+        "displayName"
+      ]
+    },
+    "omnara:index:MachineDaemonToken": {
+      "description": "A daemon token for a bring-your-own machine. The token is only returned when it is created, and is stored in state as a secret. Deleting the resource revokes the token.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "lastUsedAt": {
+          "type": "string"
+        },
+        "machineId": {
+          "type": "string",
+          "description": "Machine ID (mch_...)."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "revokeReason": {
+          "type": "string"
+        },
+        "revokedAt": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string",
+          "description": "Opaque bearer credential.",
+          "secret": true
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "machineId",
+        "metadata",
+        "name",
+        "orgId",
+        "revokeReason",
+        "token"
+      ],
+      "inputProperties": {
+        "machineId": {
+          "type": "string",
+          "description": "Machine ID (mch_...).",
+          "replaceOnChanges": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters.",
+          "replaceOnChanges": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Optional token name. Omitted values default to daemon.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "machineId"
+      ]
+    },
+    "omnara:index:MachinePool": {
+      "description": "An on-demand machine pool backed by a sandbox provider.\n\nThe capacity fields each provider requires differ:\n- `agent37`, `arker`, `freestyle`, `modal`, `tenki`, `unikraft`: `defaultMachineCpu`, `defaultMachineMemoryMb`, `maxTotalCpu`, `maxTotalMemoryMb`, `maxMachineCpu`, `maxMachineMemoryMb`.\n- `boxd`, `createos`, `daytona`, `e2b`, `superserve`: `maxTotalCpu`, `maxTotalMemoryMb`, `maxMachineCpu`, `maxMachineMemoryMb`.\n- `blaxel`: `defaultMachineMemoryMb`, `maxTotalMemoryMb`, `maxMachineMemoryMb`, and no CPU fields.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "defaultCwd": {
+          "type": "string"
+        },
+        "defaultMachineCpu": {
+          "type": "integer"
+        },
+        "defaultMachineEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Default environment for pool machines. A machine's environment, including resolved secret_env values, is applied to the provider machine at provisioning, so the provider_options startup_script and the daemon run with it, and is resolved again for each process at launch."
+        },
+        "defaultMachineMemoryMb": {
+          "type": "integer"
+        },
+        "defaultMachineProviderOptions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "defaultMachineSecretEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Default secret environment for pool machines, mapping env names to generic secret references. References are resolved to secret values wherever the machine environment is applied."
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "integer",
+          "description": "Idle minutes before deleting a machine from this pool, or null when the pool default is unset."
+        },
+        "description": {
+          "type": "string"
+        },
+        "managementKind": {
+          "type": "string",
+          "description": "Lifecycle owner. Tenant-managed resources can be changed through tenant APIs. Cluster-managed resources are installed and lifecycle-managed by the control plane; individual APIs may explicitly expose tenant-editable settings. Allowed values: `tenant`, `cluster`."
+        },
+        "maxMachineCpu": {
+          "type": "integer"
+        },
+        "maxMachineMemoryMb": {
+          "type": "integer"
+        },
+        "maxTotalCpu": {
+          "type": "integer"
+        },
+        "maxTotalMachines": {
+          "type": "integer"
+        },
+        "maxTotalMemoryMb": {
+          "type": "integer"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "minMachineCpu": {
+          "type": "integer"
+        },
+        "minMachineMemoryMb": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerAuthSecretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "providerConfig": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "runtimeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Whether Omnara deletes this pool's machines when the provider remains running after the daemon becomes inactive."
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/types/omnara:index:MachinePoolUsage",
+          "description": "Current quota-consuming usage. Populated when the machine pool is returned by the list or get endpoint."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "defaultCwd",
+        "defaultMachineEnv",
+        "defaultMachineProviderOptions",
+        "defaultMachineSecretEnv",
+        "description",
+        "managementKind",
+        "maxTotalMachines",
+        "metadata",
+        "name",
+        "orgId",
+        "provider",
+        "providerConfig",
+        "runtimeProtectionEnabled",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "defaultCwd": {
+          "type": "string"
+        },
+        "defaultMachineCpu": {
+          "type": "integer"
+        },
+        "defaultMachineEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Default environment for pool machines. A machine's environment, including resolved secret_env values, is applied to the provider machine at provisioning, so the provider_options startup_script and the daemon run with it, and is resolved again for each process at launch."
+        },
+        "defaultMachineMemoryMb": {
+          "type": "integer"
+        },
+        "defaultMachineProviderOptions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "defaultMachineSecretEnv": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Default secret environment for pool machines, mapping env names to generic secret references. References are resolved to secret values wherever the machine environment is applied."
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "integer",
+          "description": "Idle minutes before deleting a machine from this pool. Omit to leave the pool default unset; a grant or agent source may still override it."
+        },
+        "description": {
+          "type": "string"
+        },
+        "maxMachineCpu": {
+          "type": "integer"
+        },
+        "maxMachineMemoryMb": {
+          "type": "integer"
+        },
+        "maxTotalCpu": {
+          "type": "integer"
+        },
+        "maxTotalMachines": {
+          "type": "integer"
+        },
+        "maxTotalMemoryMb": {
+          "type": "integer"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "User-supplied metadata stored on a machine, provided directly or copied from the machine pool that provisions it. A restriction of Metadata that leaves room for one reserved pair - Omnara sets observed_platform on the machine to the platform reported by its daemon, so the key is reserved and at most 15 user pairs are accepted."
+        },
+        "minMachineCpu": {
+          "type": "integer"
+        },
+        "minMachineMemoryMb": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "provider": {
+          "type": "string",
+          "replaceOnChanges": true
+        },
+        "providerAuthSecretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "providerConfig": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "runtimeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Whether Omnara should delete a pool machine when its provider remains running after its daemon becomes inactive. Defaults to false when omitted.",
+          "default": false
+        }
+      },
+      "requiredInputs": [
+        "defaultMachineProviderOptions",
+        "maxTotalMachines",
+        "name",
+        "provider",
+        "providerAuthSecretId"
+      ]
+    },
+    "omnara:index:MemoryStore": {
+      "description": "Create memory store",
+      "properties": {
+        "agentAccess": {
+          "type": "string",
+          "description": "Allowed values: `read`, `read_write`."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Machine-readable memory store identifier consisting of lowercase ASCII segments separated by single hyphens."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "agentAccess",
+        "createdAt",
+        "description",
+        "name",
+        "orgId",
+        "projectId",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "agentAccess": {
+          "type": "string",
+          "description": "Allowed values: `read`, `read_write`.",
+          "default": "read_write"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Machine-readable memory store identifier consisting of lowercase ASCII segments separated by single hyphens.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "name",
+        "projectId"
+      ]
+    },
+    "omnara:index:ModelProviderConfig": {
+      "description": "Create a model provider config, validate the configured credential where the provider exposes a validation endpoint, then probe the provider's /models endpoint. The result is returned as model_catalog; a failed probe does not fail creation.",
+      "properties": {
+        "apiFormat": {
+          "type": "string",
+          "description": "Wire protocol the model endpoint speaks: openai-responses, openai-chat-completions, or anthropic-messages. Allowed values: `openai-responses`, `openai-chat-completions`, `anthropic-messages`."
+        },
+        "apiVariant": {
+          "type": "string"
+        },
+        "authKind": {
+          "type": "string"
+        },
+        "authOptions": {
+          "$ref": "#/types/omnara:index:ModelProviderConfigAuthOptions",
+          "description": "Non-secret authentication settings for this provider config."
+        },
+        "baseUrl": {
+          "type": "string",
+          "description": "Provider endpoint base URL. Normal API mode uses public HTTPS endpoints; localhost and loopback endpoints are only for insecure dev-mode configs."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "credentialSecretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "endpointPath": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Extra HTTP headers sent with every request to this provider."
+        },
+        "idleTimeoutMs": {
+          "type": "integer"
+        },
+        "managementKind": {
+          "type": "string",
+          "description": "Lifecycle owner. Tenant-managed resources can be changed through tenant APIs. Cluster-managed resources are installed and lifecycle-managed by the control plane; individual APIs may explicitly expose tenant-editable settings. Allowed values: `tenant`, `cluster`."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string",
+          "description": "Built-in provider settings: openai, openrouter, or anthropic. A preset fills in api_format, api_variant, base_url, endpoint_path, auth_kind, and auth_options, so omit those when using one. Allowed values: `openai`, `openrouter`, `anthropic`."
+        },
+        "requestTimeoutMs": {
+          "type": "integer"
+        },
+        "secretHeaders": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Extra HTTP headers whose values come from the referenced secrets."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "apiFormat",
+        "apiVariant",
+        "authKind",
+        "authOptions",
+        "baseUrl",
+        "createdAt",
+        "credentialSecretId",
+        "endpointPath",
+        "headers",
+        "idleTimeoutMs",
+        "managementKind",
+        "name",
+        "orgId",
+        "requestTimeoutMs",
+        "secretHeaders",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "apiFormat": {
+          "type": "string",
+          "description": "Wire protocol the model endpoint speaks: openai-responses, openai-chat-completions, or anthropic-messages. Allowed values: `openai-responses`, `openai-chat-completions`, `anthropic-messages`.",
+          "replaceOnChanges": true
+        },
+        "apiVariant": {
+          "type": "string",
+          "description": "Provider-specific flavor of the API format: default, openrouter, or bedrock. Allowed values: `default`, `openrouter`, `bedrock`.",
+          "replaceOnChanges": true
+        },
+        "authKind": {
+          "type": "string",
+          "description": "How the credential is sent: bearer_token, api_key_header, or sigv4 (AWS). Allowed values: `bearer_token`, `api_key_header`, `sigv4`."
+        },
+        "authOptions": {
+          "$ref": "#/types/omnara:index:ModelProviderConfigAuthOptions",
+          "description": "Non-secret authentication settings. Use an empty object with bearer_token. With api_key_header, set {\"header_name\":\"...\"}; Anthropic Messages defaults to {\"header_name\":\"x-api-key\"}. With sigv4, set the AWS signing service and region."
+        },
+        "baseUrl": {
+          "type": "string",
+          "description": "Provider endpoint base URL. Normal API mode requires a public HTTPS endpoint; localhost and loopback endpoints are accepted only when the API is running in insecure dev mode."
+        },
+        "credentialSecretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "endpointPath": {
+          "type": "string",
+          "description": "URL path under base_url. Defaults to /responses for OpenAI Responses, /chat/completions for Chat Completions, and /messages for Anthropic Messages."
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Extra HTTP headers sent with every request to this provider. Values are stored and returned as plain text; use secret_headers for keys and tokens."
+        },
+        "idleTimeoutMs": {
+          "type": "integer",
+          "description": "Maximum wait for response headers or the next response bytes, in milliseconds. Heartbeats count as activity. Defaults to 300000 (5 minutes). Local response processing does not consume this idle budget."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "preset": {
+          "type": "string",
+          "description": "Built-in provider settings: openai, openrouter, or anthropic. A preset fills in api_format, api_variant, base_url, endpoint_path, auth_kind, and auth_options, so omit those when using one. Allowed values: `openai`, `openrouter`, `anthropic`.",
+          "replaceOnChanges": true
+        },
+        "requestTimeoutMs": {
+          "type": "integer",
+          "description": "Total deadline for one provider attempt, including reasoning and response streaming, in milliseconds. Defaults to 3600000 (60 minutes). Retries have separate deadlines."
+        },
+        "secretHeaders": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Extra HTTP headers whose values come from org-owned generic secrets, mapping header names to secret references."
+        }
+      },
+      "requiredInputs": [
+        "credentialSecretId",
+        "name"
+      ]
+    },
+    "omnara:index:OrgMemberProjectAccess": {
+      "description": "Grants an organization member a role in one project.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "projectName": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "role": {
+          "type": "string",
+          "description": "The member's role on the project (admin, developer, operator, or viewer)."
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID (usr_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "orgId",
+        "projectId",
+        "projectName",
+        "role",
+        "userId"
+      ],
+      "inputProperties": {
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        },
+        "role": {
+          "type": "string",
+          "description": "The member's project role (admin, developer, operator, or viewer)."
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID (usr_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "projectId",
+        "role",
+        "userId"
+      ]
+    },
+    "omnara:index:Project": {
+      "description": "Creates a project, makes the caller its admin, and returns it. The new project has no grants to organization models, machines, skills, or secrets.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "name",
+        "orgId",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "name"
+      ]
+    },
+    "omnara:index:ProjectMachineGrant": {
+      "description": "Lets a project's agent configs use one BYO machine by name and returns the grant with the machine's record. Pooled machines can't be granted this way and return 404.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "machineId": {
+          "type": "string",
+          "description": "Machine ID (mch_...)."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "projectMachinePoolGrantId": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "type": "string",
+          "description": "Allowed values: `explicit`, `pool`."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "description",
+        "machineId",
+        "metadata",
+        "orgId",
+        "projectId",
+        "sourceKind",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "description": {
+          "type": "string",
+          "description": "Optional note about this grant.",
+          "replaceOnChanges": true
+        },
+        "machineId": {
+          "type": "string",
+          "description": "Machine ID (mch_...).",
+          "replaceOnChanges": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters.",
+          "replaceOnChanges": true
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "machineId",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectMachinePoolGrant": {
+      "description": "Lets a project create machines from a machine pool, optionally with its own defaults and usage caps within the pool's limits, and returns the grant. No machines are created by this call.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "defaultCwd": {
+          "type": "string"
+        },
+        "defaultMachineCpu": {
+          "type": "integer"
+        },
+        "defaultMachineEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Env overlay merged over the pool's default_machine_env for machines materialized through this grant; a null entry removes the key."
+        },
+        "defaultMachineMemoryMb": {
+          "type": "integer"
+        },
+        "defaultMachineProviderOptionsOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          }
+        },
+        "defaultMachineSecretEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Secret env overlay merged over the pool's default_machine_secret_env for machines materialized through this grant; a null entry removes the key."
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "number",
+          "description": "Idle minutes before deleting a machine created through this grant. Zero disables deletion for this grant; null inherits the pool default."
+        },
+        "description": {
+          "type": "string"
+        },
+        "machinePoolId": {
+          "type": "string",
+          "description": "Machine pool ID (mpo_...)."
+        },
+        "maxMachineCpu": {
+          "type": "integer"
+        },
+        "maxMachineMemoryMb": {
+          "type": "integer"
+        },
+        "maxTotalCpu": {
+          "type": "integer"
+        },
+        "maxTotalMachines": {
+          "type": "integer"
+        },
+        "maxTotalMemoryMb": {
+          "type": "integer"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "minMachineCpu": {
+          "type": "integer"
+        },
+        "minMachineMemoryMb": {
+          "type": "integer"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "defaultCwd",
+        "defaultMachineEnvOverlay",
+        "defaultMachineProviderOptionsOverlay",
+        "defaultMachineSecretEnvOverlay",
+        "description",
+        "machinePoolId",
+        "metadata",
+        "orgId",
+        "projectId",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "defaultCwd": {
+          "type": "string",
+          "description": "Default working directory for processes on this project's machines from the pool."
+        },
+        "defaultMachineCpu": {
+          "type": "integer",
+          "description": "Default CPU count for machines this project creates from the pool, overriding the pool's default."
+        },
+        "defaultMachineEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Env overlay merged over the pool's default_machine_env for machines materialized through this grant; a null entry removes the key."
+        },
+        "defaultMachineMemoryMb": {
+          "type": "integer",
+          "description": "Default memory in MB for machines this project creates from the pool, overriding the pool's default."
+        },
+        "defaultMachineProviderOptionsOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "pulumi.json#/Any"
+          },
+          "description": "Provider-specific options layered over the pool's provider options for this project's machines."
+        },
+        "defaultMachineSecretEnvOverlay": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Secret env overlay merged over the pool's default_machine_secret_env for machines materialized through this grant; a null entry removes the key."
+        },
+        "deleteAfterIdleMinutes": {
+          "type": "number",
+          "description": "Idle minutes before deleting a machine created through this grant. Use 0 to disable for this grant; omit to inherit the pool default. Values from 1 through 4 are invalid."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional note about this grant."
+        },
+        "machinePoolId": {
+          "type": "string",
+          "description": "Machine pool ID (mpo_...).",
+          "replaceOnChanges": true
+        },
+        "maxMachineCpu": {
+          "type": "integer",
+          "description": "Largest CPU count one of this project's machines can request."
+        },
+        "maxMachineMemoryMb": {
+          "type": "integer",
+          "description": "Largest memory in MB one of this project's machines can request."
+        },
+        "maxTotalCpu": {
+          "type": "integer",
+          "description": "Maximum total CPU across this project's live machines from the pool."
+        },
+        "maxTotalMachines": {
+          "type": "integer",
+          "description": "Maximum number of live machines this project can have from the pool."
+        },
+        "maxTotalMemoryMb": {
+          "type": "integer",
+          "description": "Maximum total memory in MB across this project's live machines from the pool."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "minMachineCpu": {
+          "type": "integer",
+          "description": "Smallest CPU count one of this project's machines can request."
+        },
+        "minMachineMemoryMb": {
+          "type": "integer",
+          "description": "Smallest memory in MB one of this project's machines can request."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "machinePoolId",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectModelGrant": {
+      "description": "Lets a project's agent configs use a configured model and returns the new grant. Optional overrides can narrow the model for that project (lower token limits, tools or reasoning turned off, fewer reasoning efforts or modalities) and set its per-request defaults within those limits.",
+      "properties": {
+        "configuredModelId": {
+          "type": "string"
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Project context budget for input and output tokens, or omitted/null to inherit from the configured model. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "defaultCacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer",
+          "description": "Project default per-request output-token cap, or omitted/null to inherit from the configured model."
+        },
+        "defaultReasoningEffort": {
+          "type": "string",
+          "description": "Project default reasoning effort, or omitted/empty to inherit from the configured model."
+        },
+        "inputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Project subset of configured-model input types (text, image, or file). Empty means inherit."
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Project output-token ceiling, or omitted/null to inherit from the configured model."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "outputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Project subset of configured-model output types. Empty means inherit."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Project subset of configured-model reasoning efforts. Empty means inherit. When non-empty, default_reasoning_effort must resolve to one of these values."
+        },
+        "supportsReasoning": {
+          "type": "boolean",
+          "description": "Project-level reasoning override, or omitted/null to inherit from the configured model."
+        },
+        "supportsTools": {
+          "type": "boolean",
+          "description": "Project-level tool-use override, or omitted/null to inherit from the configured model."
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "configuredModelId",
+        "createdAt",
+        "inputModalities",
+        "orgId",
+        "outputModalities",
+        "projectId",
+        "supportedReasoningEfforts",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "configuredModelId": {
+          "type": "string",
+          "replaceOnChanges": true
+        },
+        "contextWindowTokens": {
+          "type": "integer",
+          "description": "Optional project context budget for input and output tokens. Cannot exceed the configured model's budget. Triggers compaction when estimated input exceeds the remaining budget after output and safety reserves. The turn fails if compaction cannot make it fit."
+        },
+        "defaultCacheRetention": {
+          "type": "string",
+          "description": "Prompt-cache preference for model requests; `short` when omitted. `short` applies the route's default caching (explicit cache breakpoints where the provider requires them) and, where the route accepts one, a stable conversation key for cache-aware routing. `long` prefers the route's extended cache lifetime where one exists (currently Anthropic's one-hour cache, which on Bedrock requires Claude 4.5 or newer) and behaves like `short` elsewhere. `none` sends no Omnara-managed cache controls or conversation key; providers may still cache prefixes on their own. Allowed values: `none`, `short`, `long`."
+        },
+        "defaultMaxOutputTokens": {
+          "type": "integer",
+          "description": "Optional project default per-request output-token cap."
+        },
+        "defaultReasoningEffort": {
+          "type": "string",
+          "description": "Optional project default reasoning effort."
+        },
+        "inputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional project subset of configured-model input types (text, image, or file). Empty or omitted means inherit."
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "description": "Optional project output-token ceiling. Cannot exceed the configured model's ceiling."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "outputModalities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional project subset of configured-model output types. Empty or omitted means inherit."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        },
+        "supportedReasoningEfforts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional project subset of configured-model reasoning efforts. If this excludes the inherited default_reasoning_effort, set default_reasoning_effort on the grant too."
+        },
+        "supportsReasoning": {
+          "type": "boolean",
+          "description": "Optional project-level reasoning gate. Can disable reasoning, but cannot enable reasoning when the configured model does not support it."
+        },
+        "supportsTools": {
+          "type": "boolean",
+          "description": "Optional project-level tool-use gate. Can disable tools, but cannot enable tools when the configured model does not support them."
+        }
+      },
+      "requiredInputs": [
+        "configuredModelId",
+        "projectId"
+      ]
+    },
+    "omnara:index:Secret": {
+      "description": "An organization, project, or user secret. The material is write-only, so Pulumi keeps it in state as a secret and sends a new version when it changes.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "currentVersionNumber": {
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string",
+          "description": "Allowed values: `generic`, `oauth_token_set`, `slack_app_credentials`, `aws_credentials`, `github_app_credentials`."
+        },
+        "managementKind": {
+          "type": "string",
+          "description": "Lifecycle owner. Tenant-managed resources can be changed through tenant APIs. Cluster-managed resources are installed and lifecycle-managed by the control plane; individual APIs may explicitly expose tenant-editable settings. Allowed values: `tenant`, `cluster`."
+        },
+        "material": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:GenericSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:OAuthTokenSetSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:AWSCredentialsSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:GitHubAppCredentialsSecretMaterial"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "aws_credentials": "#/types/omnara:index:AWSCredentialsSecretMaterial",
+              "generic": "#/types/omnara:index:GenericSecretMaterial",
+              "github_app_credentials": "#/types/omnara:index:GitHubAppCredentialsSecretMaterial",
+              "oauth_token_set": "#/types/omnara:index:OAuthTokenSetSecretMaterial"
+            }
+          },
+          "description": "The secret's value. kind selects its shape: generic, oauth_token_set, aws_credentials, or github_app_credentials.",
+          "secret": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSecretOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSecretOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSecretOwner"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSecretOwner",
+              "project": "#/types/omnara:index:ProjectSecretOwner",
+              "user": "#/types/omnara:index:UserSecretOwner"
+            }
+          }
+        },
+        "payloadKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "currentVersionNumber",
+        "kind",
+        "managementKind",
+        "material",
+        "metadata",
+        "name",
+        "orgId",
+        "owner",
+        "payloadKeys",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "material": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:GenericSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:OAuthTokenSetSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:AWSCredentialsSecretMaterial"
+            },
+            {
+              "$ref": "#/types/omnara:index:GitHubAppCredentialsSecretMaterial"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "aws_credentials": "#/types/omnara:index:AWSCredentialsSecretMaterial",
+              "generic": "#/types/omnara:index:GenericSecretMaterial",
+              "github_app_credentials": "#/types/omnara:index:GitHubAppCredentialsSecretMaterial",
+              "oauth_token_set": "#/types/omnara:index:OAuthTokenSetSecretMaterial"
+            }
+          },
+          "description": "The secret's value. kind selects its shape: generic, oauth_token_set, aws_credentials, or github_app_credentials.",
+          "secret": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 characters, values must be strings of up to 512 characters."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSecretOwnerInput"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSecretOwnerInput"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSecretOwnerInput"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSecretOwnerInput",
+              "project": "#/types/omnara:index:ProjectSecretOwnerInput",
+              "user": "#/types/omnara:index:UserSecretOwnerInput"
+            }
+          },
+          "description": "Who owns the secret: {\"kind\":\"org\"}, {\"kind\":\"project\",\"project_id\":\"proj_...\"}, or {\"kind\":\"user\"}. The owner cannot change later.",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "material",
+        "name",
+        "owner"
+      ]
+    },
+    "omnara:index:SecretGrant": {
+      "description": "Shares a secret with another project.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "secretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...)."
+        },
+        "targetProjectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "orgId",
+        "secretId",
+        "targetProjectId"
+      ],
+      "inputProperties": {
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "secretId": {
+          "type": "string",
+          "description": "Secret ID (sec_...).",
+          "replaceOnChanges": true
+        },
+        "targetProjectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "secretId",
+        "targetProjectId"
+      ]
+    },
+    "omnara:index:Skill": {
+      "description": "A versioned skill package. `archive` is a directory or archive whose top level holds `SKILL.md` (or one directory that does); the provider uploads it as a zip, and uploads a new revision when it changes.",
+      "properties": {
+        "archive": {
+          "$ref": "pulumi.json#/Archive",
+          "description": "Archive to upload."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/omnara:index:SkillFile"
+          },
+          "description": "Files in the skill archive, including SKILL.md, with paths relative to the skill's top-level directory. Returned when fetching a single skill; omitted from list responses."
+        },
+        "name": {
+          "type": "string",
+          "description": "Machine-readable skill identifier consisting of lowercase ASCII segments separated by single hyphens."
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSkillOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSkillOwner"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSkillOwner"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSkillOwner",
+              "project": "#/types/omnara:index:ProjectSkillOwner",
+              "user": "#/types/omnara:index:UserSkillOwner"
+            }
+          }
+        },
+        "revision": {
+          "type": "integer",
+          "description": "Latest revision number of the skill."
+        },
+        "revisionId": {
+          "type": "string"
+        },
+        "skillMd": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "archive",
+        "createdAt",
+        "description",
+        "name",
+        "orgId",
+        "owner",
+        "revision",
+        "revisionId",
+        "updatedAt"
+      ],
+      "inputProperties": {
+        "archive": {
+          "$ref": "pulumi.json#/Archive",
+          "description": "Archive to upload."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "owner": {
+          "oneOf": [
+            {
+              "$ref": "#/types/omnara:index:OrgSkillOwnerInput"
+            },
+            {
+              "$ref": "#/types/omnara:index:ProjectSkillOwnerInput"
+            },
+            {
+              "$ref": "#/types/omnara:index:UserSkillOwnerInput"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "kind",
+            "mapping": {
+              "org": "#/types/omnara:index:OrgSkillOwnerInput",
+              "project": "#/types/omnara:index:ProjectSkillOwnerInput",
+              "user": "#/types/omnara:index:UserSkillOwnerInput"
+            }
+          },
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "archive",
+        "owner"
+      ]
+    },
+    "omnara:index:SkillGrant": {
+      "description": "Shares a skill with another project.",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "skillId": {
+          "type": "string"
+        },
+        "targetProjectId": {
+          "type": "string",
+          "description": "Project ID (proj_...)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "createdAt",
+        "orgId",
+        "skillId",
+        "targetProjectId"
+      ],
+      "inputProperties": {
+        "orgId": {
+          "type": "string",
+          "description": "Organization ID (org_...). Defaults to the provider's `orgId`.",
+          "replaceOnChanges": true
+        },
+        "skillId": {
+          "type": "string",
+          "description": "Skill ID (skl_...).",
+          "replaceOnChanges": true
+        },
+        "targetProjectId": {
+          "type": "string",
+          "description": "Project ID (proj_...).",
+          "replaceOnChanges": true
+        }
+      },
+      "requiredInputs": [
+        "skillId",
+        "targetProjectId"
+      ]
+    }
+  },
+  "functions": {
+    "omnara:index:getAgentConfig": {
+      "description": "Returns one agent config: its compiled definition with names resolved to IDs, and its source if it was saved with one. Configs Omnara derives on its own, such as those for subagents and integration launches, have no source.",
+      "inputs": {
+        "properties": {
+          "agentConfigId": {
+            "type": "string",
+            "description": "Agent config ID (acfg_...)."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "agentConfigId",
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "compiledDefinition": {
+            "$ref": "#/types/omnara:index:CompiledAgentConfig",
+            "description": "Read-only saved compiled configuration, including default tools and derived subagent overrides."
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "effectiveDefinitionHash": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Agent config ID (acfg_...)."
+          },
+          "instructionHash": {
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/types/omnara:index:AgentConfigModel"
+          },
+          "orgId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          },
+          "source": {
+            "type": "string",
+            "description": "Saved source text, exactly as sent."
+          },
+          "sourceFormat": {
+            "type": "string",
+            "description": "Allowed values: `yaml`, `json`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "compiledDefinition",
+          "createdAt",
+          "effectiveDefinitionHash",
+          "id",
+          "model",
+          "orgId",
+          "projectId"
+        ]
+      }
+    },
+    "omnara:index:getAgentProfile": {
+      "description": "Returns one agent profile with its current config, current_config_id, and current_generation.",
+      "inputs": {
+        "properties": {
+          "agentProfileId": {
+            "type": "string",
+            "description": "Agent profile ID (aprf_...)."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "agentProfileId",
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "currentConfig": {
+            "$ref": "#/types/omnara:index:AgentConfigDetails"
+          },
+          "currentConfigId": {
+            "type": "string",
+            "description": "Agent config ID (acfg_...)."
+          },
+          "currentGeneration": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name. Spaces and punctuation are allowed; leading or trailing whitespace and invisible or control characters are not."
+          },
+          "orgId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "createdAt",
+          "currentConfig",
+          "currentConfigId",
+          "currentGeneration",
+          "id",
+          "name",
+          "orgId",
+          "projectId",
+          "updatedAt"
+        ]
+      }
+    },
+    "omnara:index:getCurrentUser": {
+      "description": "Get the authenticated user and their organizations",
+      "inputs": {
+        "type": "object"
+      },
+      "outputs": {
+        "properties": {
+          "orgs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:CurrentUserOrg"
+            }
+          },
+          "user": {
+            "$ref": "#/types/omnara:index:CurrentUserIdentity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "orgs",
+          "user"
+        ]
+      }
+    },
+    "omnara:index:getIntegrationDefinitions": {
+      "description": "List installed integration implementations and their capabilities",
+      "inputs": {
+        "properties": {
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:IntegrationDefinition"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "omnara:index:getModelCatalog": {
+      "description": "Fetches the provider's live model catalog by validating the configured credential and probing the provider's /models endpoint. The call waits on the upstream provider, so it is slower than the other model provider config routes and can report failure as data.",
+      "inputs": {
+        "properties": {
+          "modelProviderConfigId": {
+            "type": "string",
+            "description": "Model provider config ID (mpc_...)."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "modelProviderConfigId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Why the probe failed. Present when status is failed."
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:DiscoveredProviderModel"
+            },
+            "description": "Models advertised by the provider, newest first, filtered to text-output tool-calling models where the provider exposes enough metadata to tell. Present when status is ok."
+          },
+          "status": {
+            "type": "string",
+            "description": "Allowed values: `ok`, `failed`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ]
+      }
+    },
+    "omnara:index:getOrganizations": {
+      "description": "Users get every organization they belong to; org API keys get the organization that issued them. Items are ordered by organization name ascending.",
+      "inputs": {
+        "type": "object"
+      },
+      "outputs": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:CurrentUserOrg"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "omnara:index:getProjectMachines": {
+      "description": "Items are ordered by machine created_at descending, then machine id descending.",
+      "inputs": {
+        "properties": {
+          "machinePoolId": {
+            "type": "string",
+            "description": "Return only machines provisioned by this machine pool."
+          },
+          "name": {
+            "type": "string",
+            "description": "Case-insensitive glob over the list's logical name. `*` matches zero or more characters, `?` matches one character, and `\\` escapes a wildcard."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          },
+          "sort": {
+            "type": "string"
+          },
+          "sourceKind": {
+            "type": "string",
+            "description": "Filter machines by source kind. Omit to include both BYO and pooled machines."
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:VisibleMachine"
+            },
+            "description": "Every item across all pages."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ]
+      }
+    },
+    "omnara:index:getProjectSecrets": {
+      "description": "Includes directly owned and granted secrets, ordered by created_at descending, then id descending.",
+      "inputs": {
+        "properties": {
+          "availabilitySource": {
+            "type": "string",
+            "description": "Filter a project inventory by how the secret became available."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Filter secrets by material kind."
+          },
+          "name": {
+            "type": "string",
+            "description": "Case-insensitive glob over the list's logical name. `*` matches zero or more characters, `?` matches one character, and `\\` escapes a wildcard."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "ownerKind": {
+            "type": "string",
+            "description": "Filter by the immutable owner kind."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          },
+          "sort": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:ProjectSecretAccess"
+            },
+            "description": "Every item across all pages."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ]
+      }
+    },
+    "omnara:index:getProjectSkills": {
+      "description": "Includes directly owned project skills and granted skills, ordered by created_at descending, then id descending.",
+      "inputs": {
+        "properties": {
+          "availabilitySource": {
+            "type": "string",
+            "description": "Filter a project inventory by how the skill became available."
+          },
+          "name": {
+            "type": "string",
+            "description": "Case-insensitive glob over the list's logical name. `*` matches zero or more characters, `?` matches one character, and `\\` escapes a wildcard."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          },
+          "ownerKind": {
+            "type": "string",
+            "description": "Filter by the immutable skill owner kind."
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID (proj_...)."
+          },
+          "sort": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectId"
+        ]
+      },
+      "outputs": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:ProjectSkillAccess"
+            },
+            "description": "Every item across all pages."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ]
+      }
+    },
+    "omnara:index:getProjects": {
+      "description": "Lists the projects the caller can access in the organization, newest first, with the caller's permissions on each.",
+      "inputs": {
+        "properties": {
+          "orgId": {
+            "type": "string",
+            "description": "Organization ID (org_...). Defaults to the provider's `orgId`."
+          }
+        },
+        "type": "object"
+      },
+      "outputs": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:VisibleProject"
+            },
+            "description": "Every item across all pages."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ]
+      }
+    },
+    "omnara:index:getToolCatalog": {
+      "description": "Lists the built-in tools agent configs can use, with each tool's description and permission settings, plus the permission modes for custom and MCP tools.",
+      "inputs": {
+        "type": "object"
+      },
+      "outputs": {
+        "properties": {
+          "builtInTools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/types/omnara:index:ToolCatalogEntry"
+            }
+          },
+          "customToolPermissions": {
+            "$ref": "#/types/omnara:index:ToolPermissionProfile"
+          },
+          "mcpToolPermissions": {
+            "$ref": "#/types/omnara:index:ToolPermissionProfile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "builtInTools",
+          "customToolPermissions",
+          "mcpToolPermissions"
+        ]
+      }
+    }
+  }
+}

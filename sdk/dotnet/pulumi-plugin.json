@@ -1,0 +1,6 @@
+{
+  "resource": true,
+  "name": "omnara",
+  "version": "0.1.0",
+  "server": "github://api.github.com/buildbetter-app/pulumi-omnara"
+}

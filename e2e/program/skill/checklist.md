@@ -1,0 +1,3 @@
+- Create the skill from a directory archive.
+- Share it with a second project.
+- Delete it on destroy.

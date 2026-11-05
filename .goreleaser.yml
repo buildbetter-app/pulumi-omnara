@@ -1,0 +1,32 @@
+version: 2
+project_name: pulumi-omnara
+
+builds:
+  - id: provider
+    dir: provider
+    main: ./cmd/pulumi-resource-omnara
+    binary: pulumi-resource-omnara
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X github.com/buildbetter-app/pulumi-omnara/provider/pkg/version.Version={{ .Version }}
+
+# Pulumi downloads plugins named pulumi-resource-<name>-v<version>-<os>-<arch>.tar.gz
+# from the release that pluginDownloadURL (github://api.github.com/buildbetter-app/pulumi-omnara) points at.
+archives:
+  - id: provider
+    name_template: "{{ .Binary }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    formats: [tar.gz]
+    files:
+      - none*
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
+changelog:
+  disable: true
+
+release:
+  prerelease: auto

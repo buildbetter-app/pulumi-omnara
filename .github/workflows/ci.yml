@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Generated SDK code depends on the CLI version; keep in step with local generation.
+  PULUMI_VERSION: 3.274.1
+
+jobs:
+  build:
+    name: Generate and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: provider/go.mod
+          cache-dependency-path: |
+            provider/go.sum
+            sdk/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - uses: pulumi/actions@8e5e406f4007fca908480587cb9893c07090f58d # v7.0.0
+        with:
+          pulumi-version: ${{ env.PULUMI_VERSION }}
+      - name: Lint
+        run: make lint
+      - name: Regenerate schema, metadata, and SDKs
+        run: make generate sdks
+      - name: Generated files are up to date
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --porcelain
+            git diff --stat
+            echo "::error::Generated files are stale. Run 'make generate sdks' and commit the result."
+            exit 1
+          fi
+      - name: Build SDKs
+        run: make build-sdks
+
+  e2e:
+    name: End-to-end (self-hosted Omnara)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: provider/go.mod
+          cache-dependency-path: provider/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: pulumi/actions@8e5e406f4007fca908480587cb9893c07090f58d # v7.0.0
+        with:
+          pulumi-version: ${{ env.PULUMI_VERSION }}
+      - name: Run E2E
+        run: make e2e
+      - name: Run the TypeScript example
+        run: |
+          make build-sdk-nodejs
+          e2e/run-typescript-example.sh
+      - name: Upload transcript
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-transcript
+          path: e2e/.state/runs/
+          if-no-files-found: warn
+      - name: Stop Omnara
+        if: always()
+        run: make e2e-down

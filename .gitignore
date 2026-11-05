@@ -1,0 +1,24 @@
+provider/bin/
+dist/
+
+# SDK build output
+sdk/nodejs/bin/
+sdk/nodejs/node_modules/
+sdk/nodejs/package-lock.json
+sdk/python/build/
+sdk/python/*.egg-info/
+sdk/dotnet/bin/
+sdk/dotnet/obj/
+__pycache__/
+
+# Local E2E state: tokens, Pulumi backend, run transcripts
+e2e/.state/
+e2e/program/Pulumi.*.yaml
+e2e/import-program/Pulumi.*.yaml
+e2e/import-cli-program/Pulumi.*.yaml
+
+# Example build output and per-stack config
+examples/*/node_modules/
+examples/*/bin/
+examples/*/package-lock.json
+examples/*/Pulumi.*.yaml

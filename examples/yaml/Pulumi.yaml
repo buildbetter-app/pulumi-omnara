@@ -1,0 +1,109 @@
+name: omnara-agent-harness-yaml
+runtime: yaml
+description: An Omnara project with a model, a skill, memory, and a scheduled triage agent.
+# Configure the provider with:
+#   pulumi config set omnara:orgId org_...
+#   pulumi config set --secret omnara:apiKey omnara_pat_v1_...
+#   pulumi config set --secret anthropicApiKey sk-ant-...
+config:
+  anthropicApiKey:
+    type: string
+    secret: true
+
+resources:
+  project:
+    type: omnara:index:Project
+    properties:
+      name: agent-harness-${pulumi.stack}
+
+  anthropicKey:
+    type: omnara:index:Secret
+    properties:
+      name: anthropic-api-key-${pulumi.stack}
+      owner:
+        kind: org
+      material:
+        kind: generic
+        value: ${anthropicApiKey}
+  anthropic:
+    type: omnara:index:ModelProviderConfig
+    properties:
+      name: anthropic-${pulumi.stack}
+      preset: anthropic
+      credentialSecretId: ${anthropicKey.id}
+  sonnet:
+    type: omnara:index:ConfiguredModel
+    properties:
+      modelProviderConfigId: ${anthropic.id}
+      name: sonnet
+      providerModelSlug: claude-sonnet-5-5
+      contextWindowTokens: 200000
+      supportsTools: true
+  sonnetGrant:
+    type: omnara:index:ProjectModelGrant
+    properties:
+      projectId: ${project.id}
+      configuredModelId: ${sonnet.id}
+
+  triageNotes:
+    type: omnara:index:Skill
+    properties:
+      owner:
+        kind: project
+        projectId: ${project.id}
+      archive:
+        fn::fileArchive: ./skills/triage-notes
+  memory:
+    type: omnara:index:MemoryStore
+    properties:
+      projectId: ${project.id}
+      name: triage-memory
+      description: What the triage agent learned about recurring reports.
+      agentAccess: read_write
+
+  triageConfig:
+    type: omnara:index:AgentConfig
+    properties:
+      projectId: ${project.id}
+      sourceFormat: yaml
+      source: |
+        version: v1
+        instruction: |
+          Triage new bug reports. Follow the triage-notes skill and record
+          recurring patterns in memory.
+        model:
+          provider_config: ${anthropic.name}
+          name: ${sonnet.name}
+        tools:
+          web_search: {}
+          ask_question: {}
+        skills:
+          - ${triageNotes.id}
+        memory_stores:
+          - name: ${memory.name}
+            access: read_write
+    options:
+      dependsOn:
+        - ${sonnetGrant}
+  triage:
+    type: omnara:index:AgentProfile
+    properties:
+      projectId: ${project.id}
+      name: triage
+      configId: ${triageConfig.id}
+  weekdayTriage:
+    type: omnara:index:CronTrigger
+    properties:
+      projectId: ${project.id}
+      name: weekday-triage
+      cron: 0 9 * * 1-5
+      timezone: America/New_York
+      enabled: false
+      messageTemplate: Triage reports filed since the last run.
+      target:
+        type: profile
+        agentProfileId: ${triage.id}
+
+outputs:
+  projectId: ${project.id}
+  triageProfileId: ${triage.id}

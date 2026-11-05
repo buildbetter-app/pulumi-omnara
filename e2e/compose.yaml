@@ -1,0 +1,129 @@
+# Self-contained local Omnara control plane for provider end-to-end tests.
+#
+# Adapted from github.com/omnara-ai/omnara compose.yaml (commit db8ab4b2510f).
+# Only what the public HTTP API needs is kept: postgres, valkey, rustfs (+init),
+# the one-shot migrator, and the api. The worker, maintenance, web, and gateway
+# services are omitted: API CRUD for config objects does not depend on them
+# (agent execution, cron firing, and the SPA do).
+#
+# The api serves /api/v1 directly (the gateway only fronts it for the SPA), so
+# the api's port 8080 is published on loopback and OMNARA_PUBLIC_URL is that
+# same origin. Only the api is published; postgres/valkey/rustfs stay on the
+# project's private network.
+#
+# Release pin: cluster-v0.2.17 (2026-11-04), image tag v0.2.17. The digests are
+# the manifest-list digests recorded in the GitHub release notes. Bump the tag
+# and digests together.
+#
+# Usage: ./up.sh and ./down.sh (they pass `-p omnara-pulumi-e2e`).
+
+name: omnara-pulumi-e2e
+
+x-app-env: &app-env
+  OMNARA_DATABASE_URL: postgres://omnara:omnara@postgres:5432/omnara?sslmode=disable
+  OMNARA_REDIS_URL: redis://redis:6379/0
+  # Must equal the origin clients use (Host header and the Origin header the
+  # same-origin auth routes check). Keep in sync with the port mapping below.
+  OMNARA_PUBLIC_URL: http://127.0.0.1:${OMNARA_E2E_PORT:-47100}
+  OMNARA_LOG_LEVEL: ${OMNARA_LOG_LEVEL:-info}
+  # Test-only: fills the secret-encryption key ("dev-local"), the skill download
+  # signing key, and the console email driver. Never use outside local tests.
+  OMNARA_ALLOW_INSECURE_DEV_DEFAULTS: "1"
+
+x-blob-env: &blob-env
+  OMNARA_BLOB_S3_BUCKET: omnara
+  OMNARA_BLOB_S3_REGION: us-east-1
+  OMNARA_BLOB_S3_ENDPOINT: http://rustfs:9000
+  OMNARA_BLOB_S3_ACCESS_KEY_ID: omnara
+  OMNARA_BLOB_S3_SECRET_ACCESS_KEY: omnara-blobs
+  OMNARA_BLOB_S3_USE_PATH_STYLE: "1"
+
+services:
+  redis:
+    image: valkey/valkey:9-alpine
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: omnara
+      POSTGRES_PASSWORD: omnara
+      POSTGRES_DB: omnara
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omnara -d omnara"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    volumes:
+      - postgres18-data:/var/lib/postgresql
+
+  rustfs:
+    image: rustfs/rustfs:1.0.0
+    command: /data
+    environment:
+      RUSTFS_ACCESS_KEY: omnara
+      RUSTFS_SECRET_KEY: omnara-blobs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/health/ready"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    volumes:
+      - rustfs-data:/data
+
+  # One-shot bucket provisioning: the application assumes buckets exist.
+  rustfs-init:
+    image: rustfs/rustfs:1.0.0
+    depends_on:
+      rustfs:
+        condition: service_healthy
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        curl -fsS -o /dev/null -X PUT --aws-sigv4 'aws:amz:us-east-1:s3' --user 'omnara:omnara-blobs' http://rustfs:9000/omnara
+    command: []
+    restart: "no"
+
+  # One-shot schema migration; the api never applies migrations itself.
+  migrate:
+    image: ghcr.io/omnara-ai/omnara-migrations:v0.2.17@sha256:bd718c99a4be129f9d39c86ae1ab24b3784bb3732d2fa30a6a1cea7aba0b0c17
+    environment:
+      OMNARA_DATABASE_URL: postgres://omnara:omnara@postgres:5432/omnara?sslmode=disable
+      OMNARA_MIGRATION_TIMEOUT: 30m
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    image: ghcr.io/omnara-ai/omnara-api:v0.2.17@sha256:955fb70caaaf8378cd586c17a8f1440d582b923576dfccf46a97b10f4826192d
+    environment:
+      <<: [*app-env, *blob-env]
+      OMNARA_MEMORY_DIR: /var/lib/omnara/memory
+      # console driver prints auth emails (including the signup verification
+      # link) to the api log; up.sh reads the verification token from there.
+      OMNARA_EMAIL_DRIVER: console
+      OMNARA_AUTH_SIGNUP_ENABLED: "1"
+      OMNARA_AUTH_PASSWORD_RESET_ENABLED: "1"
+    ports:
+      - "127.0.0.1:${OMNARA_E2E_PORT:-47100}:8080"
+    volumes:
+      - memory-data:/var/lib/omnara/memory
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      rustfs-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  memory-data:
+  postgres18-data:
+  rustfs-data:

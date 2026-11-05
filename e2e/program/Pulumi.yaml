@@ -1,0 +1,230 @@
+name: omnara-e2e
+runtime: yaml
+description: End-to-end program for the Omnara provider. e2e/run.sh drives it against a self-hosted Omnara.
+plugins:
+  providers:
+    - name: omnara
+      path: ../../provider/bin
+config:
+  suffix:
+    type: string
+  revision:
+    type: integer
+    default: 1
+  requestTimeoutMs:
+    type: integer
+    default: 10000
+  maxOutputTokens:
+    type: integer
+    default: 1000
+  skillDir:
+    type: string
+    default: ./skill
+
+variables:
+  me:
+    fn::invoke:
+      function: omnara:index:getCurrentUser
+      arguments: {}
+  projects:
+    fn::invoke:
+      function: omnara:index:getProjects
+      arguments: {}
+      return: items
+
+resources:
+  project:
+    type: omnara:index:Project
+    properties:
+      name: e2e-${suffix}
+  sharedProject:
+    type: omnara:index:Project
+    properties:
+      name: e2e-${suffix}-shared
+
+  llmKey:
+    type: omnara:index:Secret
+    properties:
+      name: e2e-${suffix}-llm-key
+      owner:
+        kind: org
+      material:
+        kind: generic
+        value: sk-e2e-revision-${revision}
+      metadata:
+        purpose: e2e
+        revision: r${revision}
+  llmKeyGrant:
+    type: omnara:index:SecretGrant
+    properties:
+      secretId: ${llmKey.id}
+      targetProjectId: ${sharedProject.id}
+
+  modelProvider:
+    type: omnara:index:ModelProviderConfig
+    properties:
+      name: e2e-${suffix}-provider
+      apiFormat: openai-chat-completions
+      baseUrl: http://127.0.0.1:9/v1
+      credentialSecretId: ${llmKey.id}
+      requestTimeoutMs: ${requestTimeoutMs}
+  model:
+    type: omnara:index:ConfiguredModel
+    properties:
+      modelProviderConfigId: ${modelProvider.id}
+      name: e2e-model
+      providerModelSlug: e2e-model-slug
+      contextWindowTokens: 128000
+      maxOutputTokens: ${maxOutputTokens}
+  modelGrant:
+    type: omnara:index:ProjectModelGrant
+    properties:
+      projectId: ${project.id}
+      configuredModelId: ${model.id}
+
+  agentConfig:
+    type: omnara:index:AgentConfig
+    properties:
+      projectId: ${project.id}
+      sourceFormat: yaml
+      source: |
+        version: v1
+        instruction: |
+          You are the Pulumi end-to-end test agent, revision ${revision}.
+        model:
+          provider_config: ${modelProvider.name}
+          name: ${model.name}
+    options:
+      dependsOn:
+        - ${modelGrant}
+  agentProfile:
+    type: omnara:index:AgentProfile
+    properties:
+      projectId: ${project.id}
+      name: e2e-profile-r${revision}
+      configId: ${agentConfig.id}
+  cron:
+    type: omnara:index:CronTrigger
+    properties:
+      projectId: ${project.id}
+      name: e2e-daily
+      cron: 0 ${revision} * * *
+      timezone: UTC
+      enabled: false
+      messageTemplate: Daily E2E run, revision ${revision}.
+      target:
+        type: profile
+        agentProfileId: ${agentProfile.id}
+
+  webhook:
+    type: omnara:index:EventWebhook
+    properties:
+      projectId: ${project.id}
+      url: https://example.com/omnara/revision-${revision}
+      eventTypes:
+        - agent_input
+        - model_output
+      scope:
+        type: project
+
+  memory:
+    type: omnara:index:MemoryStore
+    properties:
+      projectId: ${project.id}
+      name: e2e-memory
+      description: E2E memory, revision ${revision}.
+      agentAccess: read
+
+  skill:
+    type: omnara:index:Skill
+    properties:
+      owner:
+        kind: project
+        projectId: ${project.id}
+      archive:
+        fn::fileArchive: ${skillDir}
+  skillGrant:
+    type: omnara:index:SkillGrant
+    properties:
+      skillId: ${skill.id}
+      targetProjectId: ${sharedProject.id}
+
+  machine:
+    type: omnara:index:Machine
+    properties:
+      displayName: e2e-${suffix}-box
+      description: E2E bring-your-own machine.
+      cwd: /workspace/r${revision}
+      env:
+        REVISION: r${revision}
+        # Nested secret: must stay encrypted in state even though the API
+        # echoes env back in plain text.
+        API_TOKEN:
+          fn::secret: e2e-nested-secret-value
+  daemonToken:
+    type: omnara:index:MachineDaemonToken
+    properties:
+      machineId: ${machine.id}
+      name: e2e-daemon
+  machineGrant:
+    type: omnara:index:ProjectMachineGrant
+    properties:
+      projectId: ${project.id}
+      machineId: ${machine.id}
+      description: E2E grant.
+
+  poolKey:
+    type: omnara:index:Secret
+    properties:
+      name: e2e-${suffix}-daytona-key
+      owner:
+        kind: org
+      material:
+        kind: generic
+        value: daytona-e2e-key
+  pool:
+    type: omnara:index:MachinePool
+    properties:
+      name: e2e-${suffix}-pool
+      provider: daytona
+      providerAuthSecretId: ${poolKey.id}
+      maxTotalMachines: ${revision}
+      maxTotalCpu: 8
+      maxTotalMemoryMb: 16384
+      maxMachineCpu: 4
+      maxMachineMemoryMb: 8192
+      defaultMachineProviderOptions:
+        snapshot: e2e-snapshot
+        target: us
+  poolGrant:
+    type: omnara:index:ProjectMachinePoolGrant
+    properties:
+      projectId: ${project.id}
+      machinePoolId: ${pool.id}
+      maxTotalMachines: 1
+      description: E2E pool grant, revision ${revision}.
+
+  memberAccess:
+    type: omnara:index:OrgMemberProjectAccess
+    properties:
+      userId: ${me.user.id}
+      projectId: ${sharedProject.id}
+      role: admin
+
+outputs:
+  me: ${me.user.email}
+  visibleProjects: ${projects}
+  projectId: ${project.id}
+  sharedProjectId: ${sharedProject.id}
+  secretId: ${llmKey.id}
+  secretVersion: ${llmKey.currentVersionNumber}
+  agentConfigId: ${agentConfig.id}
+  agentProfileConfigId: ${agentProfile.currentConfigId}
+  agentProfileId: ${agentProfile.id}
+  webhookId: ${webhook.id}
+  modelProviderId: ${modelProvider.id}
+  modelId: ${model.id}
+  skillName: ${skill.name}
+  skillRevision: ${skill.revision}
+  daemonToken: ${daemonToken.token}
+  memberAccessId: ${memberAccess.id}
