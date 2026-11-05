@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  PULUMI_VERSION: 3.274.1
+  PULUMI_VERSION: 3.274.0
 
 jobs:
   release:

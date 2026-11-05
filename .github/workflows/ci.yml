@@ -14,7 +14,7 @@ concurrency:
 
 env:
   # Generated SDK code depends on the CLI version; keep in step with local generation.
-  PULUMI_VERSION: 3.274.1
+  PULUMI_VERSION: 3.274.0
 
 jobs:
   build:
