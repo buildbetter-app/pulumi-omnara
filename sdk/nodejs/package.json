@@ -1,0 +1,31 @@
+{
+    "name": "@buildbetter-app/pulumi-omnara",
+    "version": "0.1.0",
+    "description": "A Pulumi provider for Omnara, the open-source managed agent platform. Generated from the Omnara OpenAPI specification.",
+    "keywords": [
+        "pulumi",
+        "omnara",
+        "agents",
+        "category/infrastructure",
+        "kind/native"
+    ],
+    "homepage": "https://github.com/buildbetter-app/pulumi-omnara",
+    "repository": "https://github.com/buildbetter-app/pulumi-omnara",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.142.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "typescript": "^4.7.0"
+    },
+    "pulumi": {
+        "resource": true,
+        "name": "omnara",
+        "version": "0.1.0",
+        "server": "github://api.github.com/buildbetter-app/pulumi-omnara"
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "bin",
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "files": ["index.ts"]
+}

@@ -1,0 +1,222 @@
+# Maps Omnara OpenAPI operations onto Pulumi resources and functions.
+#
+# The generator (provider/cmd/pulumi-gen-omnara) reads this file together with
+# spec/openapi.yaml. Each operation reference is either an operationId or an
+# object with these optional keys:
+#   op         operationId (required in the object form)
+#   result     response field that holds the resource object (for list reads,
+#              the field of each list item)
+#   extra      response fields to expose as outputs: {api_field: pulumiName}
+#   fromState  update body fields filled from current outputs: {api_field: pulumiName}
+#   match      list read: item fields that must equal inputs: {api_field: pulumiName or $id}
+#   goneIfSet  item field whose non-null value means the resource no longer exists
+#   query      list read: query parameters from properties: {param: pulumiName or dotted.path}
+#   queryDefaults  list read: values for query parameters that no property supplies (imports)
+#   paginate   functions only: aggregate every page of `data` into `items`
+#
+# Resource keys:
+#   create, read, update (list), delete   operations
+#   rename      {api_or_param_name: pulumiName} renames for inputs and outputs
+#   secret      Pulumi property names stored as secrets
+#   skipOutputs Pulumi output names dropped from the schema
+#   anyOutputs  Pulumi output names typed as free-form JSON
+#   id          Pulumi inputs that form a composite ID, for resources without one
+#   unique      inputs the API keeps unique (default: name, when present)
+#   deleteBeforeReplace  always delete the old object before creating its replacement
+#   readInputs  {input: output} for inputs whose live value comes back under another name
+#   serverKeys  {mapInput: [key]} keys the API adds to a map input; reads ignore them
+#   description resource docs (default: the create operation's description)
+#
+# Every operation must accept bearer tokens. Org API key management and
+# personal access tokens need a dashboard session, so they are not here.
+
+package:
+  name: omnara
+  displayName: Omnara
+  description: A Pulumi provider for Omnara, the open-source managed agent platform. Generated from the Omnara OpenAPI specification.
+  publisher: BuildBetter
+  homepage: https://github.com/buildbetter-app/pulumi-omnara
+  repository: https://github.com/buildbetter-app/pulumi-omnara
+  license: Apache-2.0
+  keywords: [pulumi, omnara, agents, category/infrastructure, kind/native]
+  pluginDownloadURL: github://api.github.com/buildbetter-app/pulumi-omnara
+
+# Path parameter names to Pulumi input names. Unlisted parameters ending in
+# "ID" become lowerCamel with an "Id" suffix (for example secretID -> secretId).
+pathParams:
+  poolID: machinePoolId
+
+resources:
+  Project:
+    create: createProject
+    read: {op: listVisibleProjects, match: {id: $id}}
+    delete: deleteProject
+
+  OrgMemberProjectAccess:
+    description: Grants an organization member a role in one project.
+    create: setMemberProjectAccess
+    read: {op: listMemberProjectAccess, match: {project_id: projectId}}
+    update: [setMemberProjectAccess]
+    delete: removeMemberProjectAccess
+    id: [userId, projectId]
+
+  Secret:
+    description: An organization, project, or user secret. The material is write-only, so Pulumi keeps it in state as a secret and sends a new version when it changes.
+    create: createSecret
+    read: getSecret
+    update: [updateSecret, createSecretVersion]
+    delete: deleteSecret
+    secret: [material]
+
+  SecretGrant:
+    description: Shares a secret with another project.
+    create: createSecretGrant
+    read: {op: listSecretGrants, match: {id: $id}, result: grant}
+    delete: deleteSecretGrant
+
+  Skill:
+    description: A versioned skill package. `archive` is a directory or archive whose top level holds `SKILL.md` (or one directory that does); the provider uploads it as a zip, and uploads a new revision when it changes.
+    create: createSkill
+    read: getSkill
+    update: [updateSkill]
+    delete: deleteSkill
+    skipInputs: [skillMd]
+    unique: []
+
+  SkillGrant:
+    description: Shares a skill with another project.
+    create: createSkillGrant
+    read: {op: listSkillGrants, match: {id: $id}, result: grant}
+    delete: deleteSkillGrant
+
+  ModelProviderConfig:
+    create: {op: createModelProviderConfig, result: config}
+    read: getModelProviderConfig
+    update: [updateModelProviderConfig]
+    delete: deleteModelProviderConfig
+
+  ConfiguredModel:
+    create: createConfiguredModel
+    read: {op: listConfiguredModels, match: {id: $id}}
+    update: [updateConfiguredModel]
+    delete: deleteConfiguredModel
+
+  ProjectModelGrant:
+    create: {op: createProjectModelGrant, result: grant}
+    read: {op: listProjectModelGrants, match: {id: $id}, result: grant}
+    update: [{op: updateProjectModelGrant, result: grant}]
+    delete: deleteProjectModelGrant
+    unique: []
+
+  Machine:
+    description: A bring-your-own machine record. Pair it with a MachineDaemonToken and run the Omnara daemon on the host to connect it.
+    create: createMachine
+    read: {op: getMachine, goneIfSet: deleted_at}
+    update: [updateMachine]
+    delete: deleteMachine
+    unique: []
+    serverKeys: {metadata: [observed_platform]}
+
+  MachineDaemonToken:
+    description: A daemon token for a bring-your-own machine. The token is only returned when it is created, and is stored in state as a secret. Deleting the resource revokes the token.
+    create: {op: createBYOMachineDaemonToken, result: token_record, extra: {token: token}}
+    read: {op: listBYOMachineDaemonTokens, match: {id: $id}, goneIfSet: revoked_at}
+    delete: revokeMachineDaemonToken
+    secret: [token]
+    unique: []
+
+  ProjectMachineGrant:
+    create: {op: createProjectMachineGrant, result: grant}
+    read: {op: listProjectMachineGrants, match: {id: $id}, result: grant}
+    delete: deleteProjectMachineGrant
+    unique: []
+
+  MachinePool:
+    description: |-
+      An on-demand machine pool backed by a sandbox provider.
+
+      The capacity fields each provider requires differ:
+      - `agent37`, `arker`, `freestyle`, `modal`, `tenki`, `unikraft`: `defaultMachineCpu`, `defaultMachineMemoryMb`, `maxTotalCpu`, `maxTotalMemoryMb`, `maxMachineCpu`, `maxMachineMemoryMb`.
+      - `boxd`, `createos`, `daytona`, `e2b`, `superserve`: `maxTotalCpu`, `maxTotalMemoryMb`, `maxMachineCpu`, `maxMachineMemoryMb`.
+      - `blaxel`: `defaultMachineMemoryMb`, `maxTotalMemoryMb`, `maxMachineMemoryMb`, and no CPU fields.
+    create: createMachinePool
+    read: getMachinePool
+    update: [updateMachinePool]
+    delete: deleteMachinePool
+
+  ProjectMachinePoolGrant:
+    create: createProjectMachinePoolGrant
+    read: getProjectMachinePoolGrant
+    update: [updateProjectMachinePoolGrant]
+    delete: deleteProjectMachinePoolGrant
+    unique: []
+
+  AgentConfig:
+    description: An immutable agent config compiled from YAML or JSON source. Any change creates a new config. Omnara has no delete operation for configs, so deleting the resource only removes it from the stack.
+    create: createAgentConfig
+    read: getAgentConfig
+    anyOutputs: [compiledDefinition]
+
+  AgentProfile:
+    description: A named, reusable launch profile that points at an agent config. Changing `configId` moves the profile to the new config.
+    create: createAgentProfile
+    read: getAgentProfile
+    update:
+      - renameAgentProfile
+      - {op: updateAgentProfile, fromState: {expected_current_config_id: currentConfigId}}
+    delete: deleteAgentProfile
+    rename: {config: configId}
+    readInputs: {configId: currentConfigId}
+    skipOutputs: [currentConfig]
+
+  CronTrigger:
+    create: createCronTrigger
+    read: getCronTrigger
+    update: [updateCronTrigger]
+    delete: deleteCronTrigger
+
+  EventWebhook:
+    create: createEventWebhook
+    description: An event webhook. Imports find project-scoped webhooks only, because listing agent-profile or agent webhooks needs the scope's ID.
+    read:
+      op: listEventWebhooks
+      match: {id: $id}
+      query: {scope_type: scope.type, agent_profile_id: scope.agentProfileId, agent_id: scope.agentId}
+      queryDefaults: {scope_type: project}
+    update: [updateEventWebhook]
+    delete: deleteEventWebhook
+    unique: []
+
+  Integration:
+    description: A project integration. OAuth and app-installation setup flows still run in the Omnara dashboard; this resource manages the integration record and its settings.
+    create: createIntegration
+    read: getIntegration
+    update: [updateIntegration]
+    delete: deleteIntegration
+
+  IntegrationSubscription:
+    description: Routes an integration conversation to an agent. Creating a subscription that already exists returns the existing one, so replacements delete the old subscription first.
+    create: createIntegrationSubscription
+    read: {op: listIntegrationSubscriptions, match: {id: $id}}
+    delete: deleteIntegrationSubscription
+    unique: []
+    deleteBeforeReplace: true
+
+  MemoryStore:
+    create: createMemoryStore
+    read: getMemoryStore
+    update: [updateMemoryStore]
+    delete: deleteMemoryStore
+
+functions:
+  getCurrentUser: {op: getCurrentUser}
+  getOrganizations: {op: listOrganizations}
+  getProjects: {op: listVisibleProjects, paginate: true}
+  getProjectSecrets: {op: listProjectAvailableSecrets, paginate: true}
+  getProjectSkills: {op: listProjectAvailableSkills, paginate: true}
+  getProjectMachines: {op: listVisibleProjectMachines, paginate: true}
+  getToolCatalog: {op: getToolCatalog}
+  getModelCatalog: {op: getModelCatalog}
+  getIntegrationDefinitions: {op: listIntegrationDefinitions}
+  getAgentConfig: {op: getAgentConfig}
+  getAgentProfile: {op: getAgentProfile}

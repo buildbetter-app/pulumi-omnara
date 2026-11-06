@@ -1,0 +1,7789 @@
+{
+  "resources": {
+    "omnara:index:AgentConfig": {
+      "create": {
+        "operationId": "createAgentConfig",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-configs",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "source",
+          "sourceFormat"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "getAgentConfig",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-configs/{agentConfigID}",
+        "pathParams": {
+          "agentConfigID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "source": {
+          "api": "source",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:AgentConfigDefinition"
+            ]
+          },
+          "replace": true
+        },
+        "sourceFormat": {
+          "api": "source_format",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        }
+      },
+      "outputs": {
+        "compiledDefinition": {
+          "api": "compiled_definition",
+          "shape": {
+            "k": "any"
+          },
+          "computed": true
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "effectiveDefinitionHash": {
+          "api": "effective_definition_hash",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "instructionHash": {
+          "api": "instruction_hash",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "model": {
+          "api": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigModel"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "api": "source",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "sourceFormat": {
+          "api": "source_format",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "idParam": "agentConfigID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:AgentProfile": {
+      "create": {
+        "operationId": "createAgentProfile",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "configId",
+          "name"
+        ],
+        "bodyEncoding": "json",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "getAgentProfile",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles/{agentProfileID}",
+        "pathParams": {
+          "agentProfileID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "renameAgentProfile",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles/{agentProfileID}",
+          "pathParams": {
+            "agentProfileID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "name"
+          ],
+          "bodyEncoding": "json"
+        },
+        {
+          "operationId": "updateAgentProfile",
+          "method": "POST",
+          "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles/{agentProfileID}/config",
+          "pathParams": {
+            "agentProfileID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "configId"
+          ],
+          "bodyEncoding": "json",
+          "fromState": {
+            "expected_current_config_id": "currentConfigId"
+          },
+          "idempotent": true
+        }
+      ],
+      "delete": {
+        "operationId": "deleteAgentProfile",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles/{agentProfileID}",
+        "pathParams": {
+          "agentProfileID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "configId": {
+          "api": "config",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "configId": {
+          "api": "config",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "currentConfigId": {
+          "api": "current_config_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "currentGeneration": {
+          "api": "current_generation",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "agentProfileID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ],
+      "uniqueProps": [
+        "name"
+      ],
+      "inputFromOutput": {
+        "configId": "currentConfigId"
+      }
+    },
+    "omnara:index:ConfiguredModel": {
+      "create": {
+        "operationId": "createConfiguredModel",
+        "method": "POST",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}/models",
+        "pathParams": {
+          "modelProviderConfigID": "modelProviderConfigId",
+          "orgID": "orgId"
+        },
+        "body": [
+          "apiVariantOptions",
+          "contextWindowTokens",
+          "defaultCacheRetention",
+          "defaultMaxOutputTokens",
+          "defaultReasoningEffort",
+          "inputModalities",
+          "maxOutputTokens",
+          "name",
+          "outputModalities",
+          "providerModelSlug",
+          "supportedReasoningEfforts",
+          "supportsReasoning",
+          "supportsTools"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listConfiguredModels",
+        "method": "GET",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}/models",
+        "pathParams": {
+          "modelProviderConfigID": "modelProviderConfigId",
+          "orgID": "orgId"
+        },
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "updates": [
+        {
+          "operationId": "updateConfiguredModel",
+          "method": "PUT",
+          "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}/models/{configuredModelID}",
+          "pathParams": {
+            "configuredModelID": "$id",
+            "modelProviderConfigID": "modelProviderConfigId",
+            "orgID": "orgId"
+          },
+          "body": [
+            "apiVariantOptions",
+            "contextWindowTokens",
+            "defaultCacheRetention",
+            "defaultMaxOutputTokens",
+            "defaultReasoningEffort",
+            "inputModalities",
+            "maxOutputTokens",
+            "name",
+            "outputModalities",
+            "providerModelSlug",
+            "supportedReasoningEfforts",
+            "supportsReasoning",
+            "supportsTools"
+          ],
+          "bodyEncoding": "json",
+          "nullable": [
+            "defaultMaxOutputTokens",
+            "maxOutputTokens"
+          ]
+        }
+      ],
+      "delete": {
+        "operationId": "deleteConfiguredModel",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}/models/{configuredModelID}",
+        "pathParams": {
+          "configuredModelID": "$id",
+          "modelProviderConfigID": "modelProviderConfigId",
+          "orgID": "orgId"
+        }
+      },
+      "inputs": {
+        "apiVariantOptions": {
+          "api": "api_variant_options",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "contextWindowTokens": {
+          "api": "context_window_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultCacheRetention": {
+          "api": "default_cache_retention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMaxOutputTokens": {
+          "api": "default_max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultReasoningEffort": {
+          "api": "default_reasoning_effort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "inputModalities": {
+          "api": "input_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "maxOutputTokens": {
+          "api": "max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "modelProviderConfigId": {
+          "api": "modelProviderConfigID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "outputModalities": {
+          "api": "output_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "providerModelSlug": {
+          "api": "provider_model_slug",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportedReasoningEfforts": {
+          "api": "supported_reasoning_efforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supportsReasoning": {
+          "api": "supports_reasoning",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportsTools": {
+          "api": "supports_tools",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "apiVariantOptions": {
+          "api": "api_variant_options",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "contextWindowTokens": {
+          "api": "context_window_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "currentRevisionId": {
+          "api": "current_revision_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "defaultCacheRetention": {
+          "api": "default_cache_retention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMaxOutputTokens": {
+          "api": "default_max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultReasoningEffort": {
+          "api": "default_reasoning_effort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "inputModalities": {
+          "api": "input_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "managementKind": {
+          "api": "management_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "maxOutputTokens": {
+          "api": "max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "modelProviderConfigId": {
+          "api": "model_provider_config_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "outputModalities": {
+          "api": "output_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "providerModelSlug": {
+          "api": "provider_model_slug",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "revisionCreatedAt": {
+          "api": "revision_created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "supportedReasoningEfforts": {
+          "api": "supported_reasoning_efforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supportsReasoning": {
+          "api": "supports_reasoning",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportsTools": {
+          "api": "supports_tools",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "configuredModelID",
+      "scopeProps": [
+        "orgId",
+        "modelProviderConfigId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:CronTrigger": {
+      "create": {
+        "operationId": "createCronTrigger",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/cron-triggers",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "cron",
+          "enabled",
+          "messageTemplate",
+          "name",
+          "target",
+          "timezone"
+        ],
+        "bodyEncoding": "json",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "getCronTrigger",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/cron-triggers/{cronTriggerID}",
+        "pathParams": {
+          "cronTriggerID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateCronTrigger",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/cron-triggers/{cronTriggerID}",
+          "pathParams": {
+            "cronTriggerID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "cron",
+            "enabled",
+            "messageTemplate",
+            "name",
+            "target",
+            "timezone"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteCronTrigger",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/cron-triggers/{cronTriggerID}",
+        "pathParams": {
+          "cronTriggerID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "cron": {
+          "api": "cron",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "api": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "messageTemplate": {
+          "api": "message_template",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "target": {
+          "api": "target",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:AgentCronTriggerTarget",
+              "omnara:index:AgentProfileCronTriggerTarget",
+              "omnara:index:IntegrationCronTriggerTarget"
+            ]
+          }
+        },
+        "timezone": {
+          "api": "timezone",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "cron": {
+          "api": "cron",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "api": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "failureReport": {
+          "api": "failure_report",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CronTriggerFailureReport"
+          },
+          "computed": true
+        },
+        "lastFiredAt": {
+          "api": "last_fired_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "lastRun": {
+          "api": "last_run",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CronTriggerLastRun"
+          },
+          "computed": true
+        },
+        "messageTemplate": {
+          "api": "message_template",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "nextFireAt": {
+          "api": "next_fire_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "target": {
+          "api": "target",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:AgentCronTriggerTarget",
+              "omnara:index:AgentProfileCronTriggerTarget",
+              "omnara:index:IntegrationCronTriggerTarget"
+            ]
+          }
+        },
+        "timezone": {
+          "api": "timezone",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "cronTriggerID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:EventWebhook": {
+      "create": {
+        "operationId": "createEventWebhook",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/event-webhooks",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "eventTypes",
+          "scope",
+          "signingSecretId",
+          "url"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listEventWebhooks",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/event-webhooks",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "query": {
+          "agent_id": "scope.agentId",
+          "agent_profile_id": "scope.agentProfileId",
+          "scope_type": "scope.type"
+        },
+        "queryDefaults": {
+          "scope_type": "project"
+        },
+        "list": true,
+        "match": {
+          "id": "$id"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateEventWebhook",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/event-webhooks/{webhookID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "projectID": "projectId",
+            "webhookID": "$id"
+          },
+          "body": [
+            "eventTypes",
+            "signingSecretId",
+            "url"
+          ],
+          "bodyEncoding": "json",
+          "nullable": [
+            "signingSecretId"
+          ]
+        }
+      ],
+      "delete": {
+        "operationId": "deleteEventWebhook",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/event-webhooks/{webhookID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId",
+          "webhookID": "$id"
+        }
+      },
+      "inputs": {
+        "eventTypes": {
+          "api": "event_types",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "scope": {
+          "api": "scope",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:ProjectEventWebhookScope",
+              "omnara:index:AgentProfileEventWebhookScope",
+              "omnara:index:AgentEventWebhookScope"
+            ]
+          },
+          "replace": true
+        },
+        "signingSecretId": {
+          "api": "signing_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "url": {
+          "api": "url",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "eventTypes": {
+          "api": "event_types",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "scope": {
+          "api": "scope",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:ProjectEventWebhookScope",
+              "omnara:index:AgentProfileEventWebhookScope",
+              "omnara:index:AgentEventWebhookScope"
+            ]
+          }
+        },
+        "signingSecretId": {
+          "api": "signing_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "url": {
+          "api": "url",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "idParam": "webhookID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:Integration": {
+      "create": {
+        "operationId": "createIntegration",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "integrationKind",
+          "name",
+          "settings"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "getIntegration",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}",
+        "pathParams": {
+          "integrationID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateIntegration",
+          "method": "PUT",
+          "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}",
+          "pathParams": {
+            "integrationID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "settings"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteIntegration",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}",
+        "pathParams": {
+          "integrationID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "integrationKind": {
+          "api": "integration_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "settings": {
+          "api": "settings",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        }
+      },
+      "outputs": {
+        "botMention": {
+          "api": "bot_mention",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "capabilities": {
+          "api": "capabilities",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationCapabilities"
+          },
+          "computed": true
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "credentialSecretId": {
+          "api": "credential_secret_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "integrationKind": {
+          "api": "integration_kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "lastOauthFlowId": {
+          "api": "last_oauth_flow_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "providerAccountRef": {
+          "api": "provider_account_ref",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "providerAgentDisplayName": {
+          "api": "provider_agent_display_name",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "providerConfig": {
+          "api": "provider_config",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          },
+          "computed": true
+        },
+        "providerTenantId": {
+          "api": "provider_tenant_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "runtimeFailure": {
+          "api": "runtime_failure",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationRuntimeFailure"
+          },
+          "computed": true
+        },
+        "settings": {
+          "api": "settings",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "setupRevision": {
+          "api": "setup_revision",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "state": {
+          "api": "state",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "integrationID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:IntegrationSubscription": {
+      "create": {
+        "operationId": "createIntegrationSubscription",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}/subscriptions",
+        "pathParams": {
+          "integrationID": "integrationId",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "agentId",
+          "conversation"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listIntegrationSubscriptions",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}/subscriptions",
+        "pathParams": {
+          "integrationID": "integrationId",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "delete": {
+        "operationId": "deleteIntegrationSubscription",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/integrations/{integrationID}/subscriptions/{subscriptionID}",
+        "pathParams": {
+          "integrationID": "integrationId",
+          "orgID": "orgId",
+          "projectID": "projectId",
+          "subscriptionID": "$id"
+        }
+      },
+      "inputs": {
+        "agentId": {
+          "api": "agent_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "conversation": {
+          "api": "conversation",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          },
+          "replace": true
+        },
+        "integrationId": {
+          "api": "integrationID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "agentId": {
+          "api": "agent_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "agentName": {
+          "api": "agent_name",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "conversation": {
+          "api": "conversation",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "conversationName": {
+          "api": "conversation_name",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "integrationId": {
+          "api": "integration_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "idParam": "subscriptionID",
+      "scopeProps": [
+        "orgId",
+        "projectId",
+        "integrationId"
+      ],
+      "deleteBeforeReplace": true
+    },
+    "omnara:index:Machine": {
+      "create": {
+        "operationId": "createMachine",
+        "method": "POST",
+        "path": "/orgs/{orgID}/machines",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "cwd",
+          "description",
+          "displayName",
+          "env",
+          "metadata",
+          "secretEnv"
+        ],
+        "bodyEncoding": "json",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "getMachine",
+        "method": "GET",
+        "path": "/orgs/{orgID}/machines/{machineID}",
+        "pathParams": {
+          "machineID": "$id",
+          "orgID": "orgId"
+        },
+        "goneIfSet": "deleted_at"
+      },
+      "updates": [
+        {
+          "operationId": "updateMachine",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/machines/{machineID}",
+          "pathParams": {
+            "machineID": "$id",
+            "orgID": "orgId"
+          },
+          "body": [
+            "cwd",
+            "env",
+            "secretEnv"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteMachine",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/machines/{machineID}",
+        "pathParams": {
+          "machineID": "$id",
+          "orgID": "orgId"
+        }
+      },
+      "inputs": {
+        "cwd": {
+          "api": "cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "displayName": {
+          "api": "display_name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "env": {
+          "api": "env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "secretEnv": {
+          "api": "secret_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      },
+      "outputs": {
+        "connectionState": {
+          "api": "connection_state",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "connectionStateReason": {
+          "api": "connection_state_reason",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "cwd": {
+          "api": "cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "deleteAttempts": {
+          "api": "delete_attempts",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "deletedAt": {
+          "api": "deleted_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "displayName": {
+          "api": "display_name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "env": {
+          "api": "env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "failureReport": {
+          "api": "failure_report",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:MachineFailureReport"
+          },
+          "computed": true
+        },
+        "lastObservedAt": {
+          "api": "last_observed_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "lifecycleReasonCode": {
+          "api": "lifecycle_reason_code",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "lifecycleReasonMessage": {
+          "api": "lifecycle_reason_message",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "lifecycleState": {
+          "api": "lifecycle_state",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "machinePoolId": {
+          "api": "machine_pool_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "nextReconcileAfter": {
+          "api": "next_reconcile_after",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider": {
+          "api": "provider",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "provisionAttempts": {
+          "api": "provision_attempts",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "secretEnv": {
+          "api": "secret_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "sourceKind": {
+          "api": "source_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "machineID",
+      "scopeProps": [
+        "orgId"
+      ],
+      "serverKeys": {
+        "metadata": [
+          "observed_platform"
+        ]
+      }
+    },
+    "omnara:index:MachineDaemonToken": {
+      "create": {
+        "operationId": "createBYOMachineDaemonToken",
+        "method": "POST",
+        "path": "/orgs/{orgID}/machines/{machineID}/daemon-tokens",
+        "pathParams": {
+          "machineID": "machineId",
+          "orgID": "orgId"
+        },
+        "body": [
+          "metadata",
+          "name"
+        ],
+        "bodyEncoding": "json",
+        "result": "token_record",
+        "extra": {
+          "token": "token"
+        }
+      },
+      "read": {
+        "operationId": "listBYOMachineDaemonTokens",
+        "method": "GET",
+        "path": "/orgs/{orgID}/machines/{machineID}/daemon-tokens",
+        "pathParams": {
+          "machineID": "machineId",
+          "orgID": "orgId"
+        },
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "goneIfSet": "revoked_at",
+        "paged": true
+      },
+      "delete": {
+        "operationId": "revokeMachineDaemonToken",
+        "method": "POST",
+        "path": "/orgs/{orgID}/machines/{machineID}/daemon-tokens/{tokenID}/revoke",
+        "pathParams": {
+          "machineID": "machineId",
+          "orgID": "orgId",
+          "tokenID": "$id"
+        }
+      },
+      "inputs": {
+        "machineId": {
+          "api": "machineID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          },
+          "replace": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "lastUsedAt": {
+          "api": "last_used_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "machineId": {
+          "api": "machine_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "revokeReason": {
+          "api": "revoke_reason",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "revokedAt": {
+          "api": "revoked_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "token": {
+          "api": "token",
+          "shape": {
+            "k": "prim"
+          },
+          "secret": true,
+          "computed": true
+        }
+      },
+      "idParam": "tokenID",
+      "scopeProps": [
+        "orgId",
+        "machineId"
+      ]
+    },
+    "omnara:index:MachinePool": {
+      "create": {
+        "operationId": "createMachinePool",
+        "method": "POST",
+        "path": "/orgs/{orgID}/machine-pools",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "defaultCwd",
+          "defaultMachineCpu",
+          "defaultMachineEnv",
+          "defaultMachineMemoryMb",
+          "defaultMachineProviderOptions",
+          "defaultMachineSecretEnv",
+          "deleteAfterIdleMinutes",
+          "description",
+          "maxMachineCpu",
+          "maxMachineMemoryMb",
+          "maxTotalCpu",
+          "maxTotalMachines",
+          "maxTotalMemoryMb",
+          "metadata",
+          "minMachineCpu",
+          "minMachineMemoryMb",
+          "name",
+          "provider",
+          "providerAuthSecretId",
+          "providerConfig",
+          "runtimeProtectionEnabled"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "getMachinePool",
+        "method": "GET",
+        "path": "/orgs/{orgID}/machine-pools/{poolID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "poolID": "$id"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateMachinePool",
+          "method": "PUT",
+          "path": "/orgs/{orgID}/machine-pools/{poolID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "poolID": "$id"
+          },
+          "body": [
+            "defaultCwd",
+            "defaultMachineCpu",
+            "defaultMachineEnv",
+            "defaultMachineMemoryMb",
+            "defaultMachineProviderOptions",
+            "defaultMachineSecretEnv",
+            "deleteAfterIdleMinutes",
+            "description",
+            "maxMachineCpu",
+            "maxMachineMemoryMb",
+            "maxTotalCpu",
+            "maxTotalMachines",
+            "maxTotalMemoryMb",
+            "metadata",
+            "minMachineCpu",
+            "minMachineMemoryMb",
+            "name",
+            "providerAuthSecretId",
+            "providerConfig",
+            "runtimeProtectionEnabled"
+          ],
+          "bodyEncoding": "json",
+          "nullable": [
+            "defaultMachineCpu",
+            "defaultMachineMemoryMb",
+            "deleteAfterIdleMinutes",
+            "maxMachineCpu",
+            "maxMachineMemoryMb",
+            "maxTotalCpu",
+            "maxTotalMemoryMb",
+            "minMachineCpu",
+            "minMachineMemoryMb"
+          ]
+        }
+      ],
+      "delete": {
+        "operationId": "deleteMachinePool",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/machine-pools/{poolID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "poolID": "$id"
+        }
+      },
+      "inputs": {
+        "defaultCwd": {
+          "api": "default_cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineCpu": {
+          "api": "default_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineEnv": {
+          "api": "default_machine_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "defaultMachineMemoryMb": {
+          "api": "default_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineProviderOptions": {
+          "api": "default_machine_provider_options",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "defaultMachineSecretEnv": {
+          "api": "default_machine_secret_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "deleteAfterIdleMinutes": {
+          "api": "delete_after_idle_minutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineCpu": {
+          "api": "max_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineMemoryMb": {
+          "api": "max_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalCpu": {
+          "api": "max_total_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMachines": {
+          "api": "max_total_machines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMemoryMb": {
+          "api": "max_total_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "minMachineCpu": {
+          "api": "min_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "minMachineMemoryMb": {
+          "api": "min_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "provider": {
+          "api": "provider",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "providerAuthSecretId": {
+          "api": "provider_auth_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "providerConfig": {
+          "api": "provider_config",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "runtimeProtectionEnabled": {
+          "api": "runtime_protection_enabled",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "defaultCwd": {
+          "api": "default_cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineCpu": {
+          "api": "default_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineEnv": {
+          "api": "default_machine_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "defaultMachineMemoryMb": {
+          "api": "default_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineProviderOptions": {
+          "api": "default_machine_provider_options",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "defaultMachineSecretEnv": {
+          "api": "default_machine_secret_env",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "deleteAfterIdleMinutes": {
+          "api": "delete_after_idle_minutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "managementKind": {
+          "api": "management_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "maxMachineCpu": {
+          "api": "max_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineMemoryMb": {
+          "api": "max_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalCpu": {
+          "api": "max_total_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMachines": {
+          "api": "max_total_machines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMemoryMb": {
+          "api": "max_total_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "minMachineCpu": {
+          "api": "min_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "minMachineMemoryMb": {
+          "api": "min_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider": {
+          "api": "provider",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "providerAuthSecretId": {
+          "api": "provider_auth_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "providerConfig": {
+          "api": "provider_config",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "runtimeProtectionEnabled": {
+          "api": "runtime_protection_enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "usage": {
+          "api": "usage",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:MachinePoolUsage"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "poolID",
+      "scopeProps": [
+        "orgId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:MemoryStore": {
+      "create": {
+        "operationId": "createMemoryStore",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/memory-stores",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "agentAccess",
+          "description",
+          "name"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "getMemoryStore",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/memory-stores/{memoryStoreID}",
+        "pathParams": {
+          "memoryStoreID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateMemoryStore",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/memory-stores/{memoryStoreID}",
+          "pathParams": {
+            "memoryStoreID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "agentAccess",
+            "description"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteMemoryStore",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/memory-stores/{memoryStoreID}",
+        "pathParams": {
+          "memoryStoreID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "agentAccess": {
+          "api": "agent_access",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "agentAccess": {
+          "api": "agent_access",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "memoryStoreID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:ModelProviderConfig": {
+      "create": {
+        "operationId": "createModelProviderConfig",
+        "method": "POST",
+        "path": "/orgs/{orgID}/model-provider-configs",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "apiFormat",
+          "apiVariant",
+          "authKind",
+          "authOptions",
+          "baseUrl",
+          "credentialSecretId",
+          "endpointPath",
+          "headers",
+          "idleTimeoutMs",
+          "name",
+          "preset",
+          "requestTimeoutMs",
+          "secretHeaders"
+        ],
+        "bodyEncoding": "json",
+        "result": "config"
+      },
+      "read": {
+        "operationId": "getModelProviderConfig",
+        "method": "GET",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}",
+        "pathParams": {
+          "modelProviderConfigID": "$id",
+          "orgID": "orgId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateModelProviderConfig",
+          "method": "PUT",
+          "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}",
+          "pathParams": {
+            "modelProviderConfigID": "$id",
+            "orgID": "orgId"
+          },
+          "body": [
+            "authKind",
+            "authOptions",
+            "baseUrl",
+            "credentialSecretId",
+            "endpointPath",
+            "headers",
+            "idleTimeoutMs",
+            "requestTimeoutMs",
+            "secretHeaders"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteModelProviderConfig",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}",
+        "pathParams": {
+          "modelProviderConfigID": "$id",
+          "orgID": "orgId"
+        }
+      },
+      "inputs": {
+        "apiFormat": {
+          "api": "api_format",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "apiVariant": {
+          "api": "api_variant",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "authKind": {
+          "api": "auth_kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "authOptions": {
+          "api": "auth_options",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ModelProviderConfigAuthOptions"
+          }
+        },
+        "baseUrl": {
+          "api": "base_url",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "credentialSecretId": {
+          "api": "credential_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "endpointPath": {
+          "api": "endpoint_path",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "headers": {
+          "api": "headers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "idleTimeoutMs": {
+          "api": "idle_timeout_ms",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "preset": {
+          "api": "preset",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "requestTimeoutMs": {
+          "api": "request_timeout_ms",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secretHeaders": {
+          "api": "secret_headers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      },
+      "outputs": {
+        "apiFormat": {
+          "api": "api_format",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "apiVariant": {
+          "api": "api_variant",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "authKind": {
+          "api": "auth_kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "authOptions": {
+          "api": "auth_options",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ModelProviderConfigAuthOptions"
+          }
+        },
+        "baseUrl": {
+          "api": "base_url",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "credentialSecretId": {
+          "api": "credential_secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "endpointPath": {
+          "api": "endpoint_path",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "headers": {
+          "api": "headers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "idleTimeoutMs": {
+          "api": "idle_timeout_ms",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "managementKind": {
+          "api": "management_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "preset": {
+          "api": "preset",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "requestTimeoutMs": {
+          "api": "request_timeout_ms",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secretHeaders": {
+          "api": "secret_headers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "modelProviderConfigID",
+      "scopeProps": [
+        "orgId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:OrgMemberProjectAccess": {
+      "create": {
+        "operationId": "setMemberProjectAccess",
+        "method": "PUT",
+        "path": "/orgs/{orgID}/members/{userID}/projects/{projectID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId",
+          "userID": "userId"
+        },
+        "body": [
+          "role"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listMemberProjectAccess",
+        "method": "GET",
+        "path": "/orgs/{orgID}/members/{userID}/projects",
+        "pathParams": {
+          "orgID": "orgId",
+          "userID": "userId"
+        },
+        "list": true,
+        "match": {
+          "project_id": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "setMemberProjectAccess",
+          "method": "PUT",
+          "path": "/orgs/{orgID}/members/{userID}/projects/{projectID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "projectID": "projectId",
+            "userID": "userId"
+          },
+          "body": [
+            "role"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "removeMemberProjectAccess",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/members/{userID}/projects/{projectID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId",
+          "userID": "userId"
+        }
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "role": {
+          "api": "role",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "userId": {
+          "api": "userID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectName": {
+          "api": "project_name",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "role": {
+          "api": "role",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "userId": {
+          "api": "userID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "idProps": [
+        "userId",
+        "projectId"
+      ],
+      "scopeProps": [
+        "orgId",
+        "userId",
+        "projectId"
+      ]
+    },
+    "omnara:index:Project": {
+      "create": {
+        "operationId": "createProject",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "name"
+        ],
+        "bodyEncoding": "json",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "listVisibleProjects",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "delete": {
+        "operationId": "deleteProject",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "$id"
+        }
+      },
+      "inputs": {
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "projectID",
+      "scopeProps": [
+        "orgId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:ProjectMachineGrant": {
+      "create": {
+        "operationId": "createProjectMachineGrant",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "description",
+          "machineId",
+          "metadata"
+        ],
+        "bodyEncoding": "json",
+        "result": "grant",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "listProjectMachineGrants",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "result": "grant",
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "delete": {
+        "operationId": "deleteProjectMachineGrant",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-grants/{grantID}",
+        "pathParams": {
+          "grantID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "machineId": {
+          "api": "machine_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          },
+          "replace": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machineId": {
+          "api": "machine_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectMachinePoolGrantId": {
+          "api": "project_machine_pool_grant_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "sourceKind": {
+          "api": "source_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "grantID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectMachinePoolGrant": {
+      "create": {
+        "operationId": "createProjectMachinePoolGrant",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-pool-grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "defaultCwd",
+          "defaultMachineCpu",
+          "defaultMachineEnvOverlay",
+          "defaultMachineMemoryMb",
+          "defaultMachineProviderOptionsOverlay",
+          "defaultMachineSecretEnvOverlay",
+          "deleteAfterIdleMinutes",
+          "description",
+          "machinePoolId",
+          "maxMachineCpu",
+          "maxMachineMemoryMb",
+          "maxTotalCpu",
+          "maxTotalMachines",
+          "maxTotalMemoryMb",
+          "metadata",
+          "minMachineCpu",
+          "minMachineMemoryMb"
+        ],
+        "bodyEncoding": "json",
+        "idempotent": true
+      },
+      "read": {
+        "operationId": "getProjectMachinePoolGrant",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-pool-grants/{poolGrantID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "poolGrantID": "$id",
+          "projectID": "projectId"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateProjectMachinePoolGrant",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/machine-pool-grants/{poolGrantID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "poolGrantID": "$id",
+            "projectID": "projectId"
+          },
+          "body": [
+            "defaultCwd",
+            "defaultMachineCpu",
+            "defaultMachineEnvOverlay",
+            "defaultMachineMemoryMb",
+            "defaultMachineProviderOptionsOverlay",
+            "defaultMachineSecretEnvOverlay",
+            "deleteAfterIdleMinutes",
+            "description",
+            "maxMachineCpu",
+            "maxMachineMemoryMb",
+            "maxTotalCpu",
+            "maxTotalMachines",
+            "maxTotalMemoryMb",
+            "metadata",
+            "minMachineCpu",
+            "minMachineMemoryMb"
+          ],
+          "bodyEncoding": "json",
+          "nullable": [
+            "defaultMachineCpu",
+            "defaultMachineMemoryMb",
+            "deleteAfterIdleMinutes",
+            "maxMachineCpu",
+            "maxMachineMemoryMb",
+            "maxTotalCpu",
+            "maxTotalMachines",
+            "maxTotalMemoryMb",
+            "minMachineCpu",
+            "minMachineMemoryMb"
+          ]
+        }
+      ],
+      "delete": {
+        "operationId": "deleteProjectMachinePoolGrant",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/machine-pool-grants/{poolGrantID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "poolGrantID": "$id",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "defaultCwd": {
+          "api": "default_cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineCpu": {
+          "api": "default_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineEnvOverlay": {
+          "api": "default_machine_env_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "defaultMachineMemoryMb": {
+          "api": "default_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineProviderOptionsOverlay": {
+          "api": "default_machine_provider_options_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "defaultMachineSecretEnvOverlay": {
+          "api": "default_machine_secret_env_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "deleteAfterIdleMinutes": {
+          "api": "delete_after_idle_minutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machinePoolId": {
+          "api": "machine_pool_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "maxMachineCpu": {
+          "api": "max_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineMemoryMb": {
+          "api": "max_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalCpu": {
+          "api": "max_total_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMachines": {
+          "api": "max_total_machines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMemoryMb": {
+          "api": "max_total_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "minMachineCpu": {
+          "api": "min_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "minMachineMemoryMb": {
+          "api": "min_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "defaultCwd": {
+          "api": "default_cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineCpu": {
+          "api": "default_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineEnvOverlay": {
+          "api": "default_machine_env_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "defaultMachineMemoryMb": {
+          "api": "default_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMachineProviderOptionsOverlay": {
+          "api": "default_machine_provider_options_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "defaultMachineSecretEnvOverlay": {
+          "api": "default_machine_secret_env_overlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "deleteAfterIdleMinutes": {
+          "api": "delete_after_idle_minutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machinePoolId": {
+          "api": "machine_pool_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineCpu": {
+          "api": "max_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxMachineMemoryMb": {
+          "api": "max_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalCpu": {
+          "api": "max_total_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMachines": {
+          "api": "max_total_machines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "maxTotalMemoryMb": {
+          "api": "max_total_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "minMachineCpu": {
+          "api": "min_machine_cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "minMachineMemoryMb": {
+          "api": "min_machine_memory_mb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "poolGrantID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:ProjectModelGrant": {
+      "create": {
+        "operationId": "createProjectModelGrant",
+        "method": "POST",
+        "path": "/orgs/{orgID}/projects/{projectID}/model-grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "body": [
+          "configuredModelId",
+          "contextWindowTokens",
+          "defaultCacheRetention",
+          "defaultMaxOutputTokens",
+          "defaultReasoningEffort",
+          "inputModalities",
+          "maxOutputTokens",
+          "outputModalities",
+          "supportedReasoningEfforts",
+          "supportsReasoning",
+          "supportsTools"
+        ],
+        "bodyEncoding": "json",
+        "result": "grant"
+      },
+      "read": {
+        "operationId": "listProjectModelGrants",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/model-grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "result": "grant",
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "updates": [
+        {
+          "operationId": "updateProjectModelGrant",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/projects/{projectID}/model-grants/{modelGrantID}",
+          "pathParams": {
+            "modelGrantID": "$id",
+            "orgID": "orgId",
+            "projectID": "projectId"
+          },
+          "body": [
+            "contextWindowTokens",
+            "defaultCacheRetention",
+            "defaultMaxOutputTokens",
+            "defaultReasoningEffort",
+            "inputModalities",
+            "maxOutputTokens",
+            "outputModalities",
+            "supportedReasoningEfforts",
+            "supportsReasoning",
+            "supportsTools"
+          ],
+          "bodyEncoding": "json",
+          "nullable": [
+            "contextWindowTokens",
+            "defaultCacheRetention",
+            "defaultMaxOutputTokens",
+            "defaultReasoningEffort",
+            "maxOutputTokens",
+            "supportsReasoning",
+            "supportsTools"
+          ],
+          "result": "grant"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteProjectModelGrant",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/projects/{projectID}/model-grants/{modelGrantID}",
+        "pathParams": {
+          "modelGrantID": "$id",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "configuredModelId": {
+          "api": "configured_model_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        },
+        "contextWindowTokens": {
+          "api": "context_window_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultCacheRetention": {
+          "api": "default_cache_retention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMaxOutputTokens": {
+          "api": "default_max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultReasoningEffort": {
+          "api": "default_reasoning_effort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "inputModalities": {
+          "api": "input_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "maxOutputTokens": {
+          "api": "max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "outputModalities": {
+          "api": "output_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "supportedReasoningEfforts": {
+          "api": "supported_reasoning_efforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supportsReasoning": {
+          "api": "supports_reasoning",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportsTools": {
+          "api": "supports_tools",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "configuredModelId": {
+          "api": "configured_model_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "contextWindowTokens": {
+          "api": "context_window_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "defaultCacheRetention": {
+          "api": "default_cache_retention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultMaxOutputTokens": {
+          "api": "default_max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "defaultReasoningEffort": {
+          "api": "default_reasoning_effort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "inputModalities": {
+          "api": "input_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "maxOutputTokens": {
+          "api": "max_output_tokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "outputModalities": {
+          "api": "output_modalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportedReasoningEfforts": {
+          "api": "supported_reasoning_efforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supportsReasoning": {
+          "api": "supports_reasoning",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supportsTools": {
+          "api": "supports_tools",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "modelGrantID",
+      "scopeProps": [
+        "orgId",
+        "projectId"
+      ]
+    },
+    "omnara:index:Secret": {
+      "create": {
+        "operationId": "createSecret",
+        "method": "POST",
+        "path": "/orgs/{orgID}/secrets",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "material",
+          "metadata",
+          "name",
+          "owner"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "getSecret",
+        "method": "GET",
+        "path": "/orgs/{orgID}/secrets/{secretID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "secretID": "$id"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateSecret",
+          "method": "PATCH",
+          "path": "/orgs/{orgID}/secrets/{secretID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "secretID": "$id"
+          },
+          "body": [
+            "metadata",
+            "name"
+          ],
+          "bodyEncoding": "json"
+        },
+        {
+          "operationId": "createSecretVersion",
+          "method": "POST",
+          "path": "/orgs/{orgID}/secrets/{secretID}/versions",
+          "pathParams": {
+            "orgID": "orgId",
+            "secretID": "$id"
+          },
+          "body": [
+            "material"
+          ],
+          "bodyEncoding": "json"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteSecret",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/secrets/{secretID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "secretID": "$id"
+        }
+      },
+      "inputs": {
+        "material": {
+          "api": "material",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:GenericSecretMaterial",
+              "omnara:index:OAuthTokenSetSecretMaterial",
+              "omnara:index:AWSCredentialsSecretMaterial",
+              "omnara:index:GitHubAppCredentialsSecretMaterial"
+            ]
+          },
+          "secret": true
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "owner": {
+          "api": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSecretOwnerInput",
+              "omnara:index:ProjectSecretOwnerInput",
+              "omnara:index:UserSecretOwnerInput"
+            ]
+          },
+          "replace": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "currentVersionNumber": {
+          "api": "current_version_number",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "kind": {
+          "api": "kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "managementKind": {
+          "api": "management_kind",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "material": {
+          "api": "material",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:GenericSecretMaterial",
+              "omnara:index:OAuthTokenSetSecretMaterial",
+              "omnara:index:AWSCredentialsSecretMaterial",
+              "omnara:index:GitHubAppCredentialsSecretMaterial"
+            ]
+          },
+          "secret": true
+        },
+        "metadata": {
+          "api": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "owner": {
+          "api": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSecretOwner",
+              "omnara:index:ProjectSecretOwner",
+              "omnara:index:UserSecretOwner"
+            ]
+          }
+        },
+        "payloadKeys": {
+          "api": "payload_keys",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          },
+          "computed": true
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "secretID",
+      "scopeProps": [
+        "orgId"
+      ],
+      "uniqueProps": [
+        "name"
+      ]
+    },
+    "omnara:index:SecretGrant": {
+      "create": {
+        "operationId": "createSecretGrant",
+        "method": "POST",
+        "path": "/orgs/{orgID}/secrets/{secretID}/grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "secretID": "secretId"
+        },
+        "body": [
+          "targetProjectId"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listSecretGrants",
+        "method": "GET",
+        "path": "/orgs/{orgID}/secrets/{secretID}/grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "secretID": "secretId"
+        },
+        "result": "grant",
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "delete": {
+        "operationId": "deleteSecretGrant",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/secrets/{secretID}/grants/{grantID}",
+        "pathParams": {
+          "grantID": "$id",
+          "orgID": "orgId",
+          "secretID": "secretId"
+        }
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "secretId": {
+          "api": "secretID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "targetProjectId": {
+          "api": "target_project_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secretId": {
+          "api": "secret_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "targetProjectId": {
+          "api": "target_project_id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "idParam": "grantID",
+      "scopeProps": [
+        "orgId",
+        "secretId"
+      ]
+    },
+    "omnara:index:Skill": {
+      "create": {
+        "operationId": "createSkill",
+        "method": "POST",
+        "path": "/orgs/{orgID}/skills",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "body": [
+          "archive",
+          "owner"
+        ],
+        "bodyEncoding": "multipart"
+      },
+      "read": {
+        "operationId": "getSkill",
+        "method": "GET",
+        "path": "/orgs/{orgID}/skills/{skillID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "skillID": "$id"
+        }
+      },
+      "updates": [
+        {
+          "operationId": "updateSkill",
+          "method": "POST",
+          "path": "/orgs/{orgID}/skills/{skillID}",
+          "pathParams": {
+            "orgID": "orgId",
+            "skillID": "$id"
+          },
+          "body": [
+            "archive"
+          ],
+          "bodyEncoding": "multipart"
+        }
+      ],
+      "delete": {
+        "operationId": "deleteSkill",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/skills/{skillID}",
+        "pathParams": {
+          "orgID": "orgId",
+          "skillID": "$id"
+        }
+      },
+      "inputs": {
+        "archive": {
+          "api": "archive",
+          "shape": {
+            "k": "archive"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "owner": {
+          "api": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSkillOwnerInput",
+              "omnara:index:ProjectSkillOwnerInput",
+              "omnara:index:UserSkillOwnerInput"
+            ]
+          },
+          "replace": true
+        }
+      },
+      "outputs": {
+        "archive": {
+          "api": "archive",
+          "shape": {
+            "k": "archive"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "description": {
+          "api": "description",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "files": {
+          "api": "files",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:SkillFile"
+            }
+          },
+          "computed": true
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "owner": {
+          "api": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSkillOwner",
+              "omnara:index:ProjectSkillOwner",
+              "omnara:index:UserSkillOwner"
+            ]
+          }
+        },
+        "revision": {
+          "api": "revision",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "revisionId": {
+          "api": "revision_id",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "skillMd": {
+          "api": "skill_md",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        }
+      },
+      "idParam": "skillID",
+      "scopeProps": [
+        "orgId"
+      ]
+    },
+    "omnara:index:SkillGrant": {
+      "create": {
+        "operationId": "createSkillGrant",
+        "method": "POST",
+        "path": "/orgs/{orgID}/skills/{skillID}/grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "skillID": "skillId"
+        },
+        "body": [
+          "targetProjectId"
+        ],
+        "bodyEncoding": "json"
+      },
+      "read": {
+        "operationId": "listSkillGrants",
+        "method": "GET",
+        "path": "/orgs/{orgID}/skills/{skillID}/grants",
+        "pathParams": {
+          "orgID": "orgId",
+          "skillID": "skillId"
+        },
+        "result": "grant",
+        "list": true,
+        "match": {
+          "id": "$id"
+        },
+        "paged": true
+      },
+      "delete": {
+        "operationId": "deleteSkillGrant",
+        "method": "DELETE",
+        "path": "/orgs/{orgID}/skills/{skillID}/grants/{grantID}",
+        "pathParams": {
+          "grantID": "$id",
+          "orgID": "orgId",
+          "skillID": "skillId"
+        }
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "skillId": {
+          "api": "skillID",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true,
+          "scope": true
+        },
+        "targetProjectId": {
+          "api": "target_project_id",
+          "shape": {
+            "k": "prim"
+          },
+          "replace": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          },
+          "computed": true
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "skillId": {
+          "api": "skill_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "targetProjectId": {
+          "api": "target_project_id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "idParam": "grantID",
+      "scopeProps": [
+        "orgId",
+        "skillId"
+      ]
+    }
+  },
+  "functions": {
+    "omnara:index:getAgentConfig": {
+      "operation": {
+        "operationId": "getAgentConfig",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-configs/{agentConfigID}",
+        "pathParams": {
+          "agentConfigID": "agentConfigId",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "agentConfigId": {
+          "api": "agentConfigID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        }
+      },
+      "outputs": {
+        "compiledDefinition": {
+          "api": "compiled_definition",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledAgentConfig"
+          }
+        },
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "effectiveDefinitionHash": {
+          "api": "effective_definition_hash",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "api": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "instructionHash": {
+          "api": "instruction_hash",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "model": {
+          "api": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigModel"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "api": "source",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "sourceFormat": {
+          "api": "source_format",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:getAgentProfile": {
+      "operation": {
+        "operationId": "getAgentProfile",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/agent-profiles/{agentProfileID}",
+        "pathParams": {
+          "agentProfileID": "agentProfileId",
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "agentProfileId": {
+          "api": "agentProfileID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        }
+      },
+      "outputs": {
+        "createdAt": {
+          "api": "created_at",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "currentConfig": {
+          "api": "current_config",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDetails"
+          }
+        },
+        "currentConfigId": {
+          "api": "current_config_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "currentGeneration": {
+          "api": "current_generation",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "api": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "org_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "project_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updatedAt": {
+          "api": "updated_at",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:getCurrentUser": {
+      "operation": {
+        "operationId": "getCurrentUser",
+        "method": "GET",
+        "path": "/me"
+      },
+      "inputs": {},
+      "outputs": {
+        "orgs": {
+          "api": "orgs",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CurrentUserOrg"
+            }
+          }
+        },
+        "user": {
+          "api": "user",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CurrentUserIdentity"
+          }
+        }
+      }
+    },
+    "omnara:index:getIntegrationDefinitions": {
+      "operation": {
+        "operationId": "listIntegrationDefinitions",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/integration-definitions",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        }
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        }
+      },
+      "outputs": {
+        "data": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:IntegrationDefinition"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:getModelCatalog": {
+      "operation": {
+        "operationId": "getModelCatalog",
+        "method": "GET",
+        "path": "/orgs/{orgID}/model-provider-configs/{modelProviderConfigID}/model-catalog",
+        "pathParams": {
+          "modelProviderConfigID": "modelProviderConfigId",
+          "orgID": "orgId"
+        }
+      },
+      "inputs": {
+        "modelProviderConfigId": {
+          "api": "modelProviderConfigID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        }
+      },
+      "outputs": {
+        "error": {
+          "api": "error",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "models": {
+          "api": "models",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:DiscoveredProviderModel"
+            }
+          }
+        },
+        "status": {
+          "api": "status",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:getOrganizations": {
+      "operation": {
+        "operationId": "listOrganizations",
+        "method": "GET",
+        "path": "/orgs"
+      },
+      "inputs": {},
+      "outputs": {
+        "data": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CurrentUserOrg"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:getProjectMachines": {
+      "operation": {
+        "operationId": "listVisibleProjectMachines",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/machines",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "query": {
+          "machine_pool_id": "machinePoolId",
+          "name": "name",
+          "sort": "sort",
+          "source_kind": "sourceKind"
+        },
+        "paged": true,
+        "paginate": true
+      },
+      "inputs": {
+        "machinePoolId": {
+          "api": "machine_pool_id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "sort": {
+          "api": "sort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "sourceKind": {
+          "api": "source_kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "items": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:VisibleMachine"
+            }
+          }
+        }
+      },
+      "itemsProp": "items"
+    },
+    "omnara:index:getProjectSecrets": {
+      "operation": {
+        "operationId": "listProjectAvailableSecrets",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/secrets",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "query": {
+          "availability_source": "availabilitySource",
+          "kind": "kind",
+          "name": "name",
+          "owner_kind": "ownerKind",
+          "sort": "sort"
+        },
+        "paged": true,
+        "paginate": true
+      },
+      "inputs": {
+        "availabilitySource": {
+          "api": "availability_source",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "api": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "ownerKind": {
+          "api": "owner_kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "sort": {
+          "api": "sort",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "items": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:ProjectSecretAccess"
+            }
+          }
+        }
+      },
+      "itemsProp": "items"
+    },
+    "omnara:index:getProjectSkills": {
+      "operation": {
+        "operationId": "listProjectAvailableSkills",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects/{projectID}/skills",
+        "pathParams": {
+          "orgID": "orgId",
+          "projectID": "projectId"
+        },
+        "query": {
+          "availability_source": "availabilitySource",
+          "name": "name",
+          "owner_kind": "ownerKind",
+          "sort": "sort"
+        },
+        "paged": true,
+        "paginate": true
+      },
+      "inputs": {
+        "availabilitySource": {
+          "api": "availability_source",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "api": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        },
+        "ownerKind": {
+          "api": "owner_kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "projectId": {
+          "api": "projectID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true
+        },
+        "sort": {
+          "api": "sort",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      },
+      "outputs": {
+        "items": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:ProjectSkillAccess"
+            }
+          }
+        }
+      },
+      "itemsProp": "items"
+    },
+    "omnara:index:getProjects": {
+      "operation": {
+        "operationId": "listVisibleProjects",
+        "method": "GET",
+        "path": "/orgs/{orgID}/projects",
+        "pathParams": {
+          "orgID": "orgId"
+        },
+        "paged": true,
+        "paginate": true
+      },
+      "inputs": {
+        "orgId": {
+          "api": "orgID",
+          "shape": {
+            "k": "prim"
+          },
+          "scope": true,
+          "defaultFromConfig": "orgId"
+        }
+      },
+      "outputs": {
+        "items": {
+          "api": "data",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:VisibleProject"
+            }
+          }
+        }
+      },
+      "itemsProp": "items"
+    },
+    "omnara:index:getToolCatalog": {
+      "operation": {
+        "operationId": "getToolCatalog",
+        "method": "GET",
+        "path": "/tool-catalog"
+      },
+      "inputs": {},
+      "outputs": {
+        "builtInTools": {
+          "api": "built_in_tools",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:ToolCatalogEntry"
+            }
+          }
+        },
+        "customToolPermissions": {
+          "api": "custom_tool_permissions",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionProfile"
+          }
+        },
+        "mcpToolPermissions": {
+          "api": "mcp_tool_permissions",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionProfile"
+          }
+        }
+      }
+    }
+  },
+  "types": {
+    "omnara:index:AWSCredentialsSecretMaterial": {
+      "props": {
+        "access_key_id": {
+          "name": "accessKeyId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "external_id": {
+          "name": "externalId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "role_arn": {
+          "name": "roleArn",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secret_access_key": {
+          "name": "secretAccessKey",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "session_token": {
+          "name": "sessionToken",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinition": {
+      "props": {
+        "git_credentials": {
+          "name": "gitCredentials",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionGitCredentials"
+          }
+        },
+        "instruction": {
+          "name": "instruction",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "interaction_handlers": {
+          "name": "interactionHandlers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "machine_sources": {
+          "name": "machineSources",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionMachineSource"
+            }
+          }
+        },
+        "max_depth": {
+          "name": "maxDepth",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "max_subagents": {
+          "name": "maxSubagents",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "mcp": {
+          "name": "mcp",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionMCPServer"
+            }
+          }
+        },
+        "memory_stores": {
+          "name": "memoryStores",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionMemoryStore"
+            }
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionModel"
+          }
+        },
+        "skills": {
+          "name": "skills",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "subagents": {
+          "name": "subagents",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionSubagent"
+            }
+          }
+        },
+        "tools": {
+          "name": "tools",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionTool"
+            }
+          }
+        },
+        "version": {
+          "name": "version",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionGitCredentials": {
+      "props": {
+        "integration": {
+          "name": "integration",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "read_only": {
+          "name": "readOnly",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "repository_ids": {
+          "name": "repositoryIds",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionMCPAuth": {
+      "props": {
+        "region": {
+          "name": "region",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secret_id": {
+          "name": "secretId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "service": {
+          "name": "service",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionMCPServer": {
+      "props": {
+        "auth": {
+          "name": "auth",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionMCPAuth"
+          }
+        },
+        "default_enabled": {
+          "name": "defaultEnabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionToolPermission"
+          }
+        },
+        "tools": {
+          "name": "tools",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:AgentConfigDefinitionMCPTool"
+            }
+          }
+        },
+        "url": {
+          "name": "url",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionMCPTool": {
+      "props": {
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "name": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionToolPermission"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionMachineSource": {
+      "props": {
+        "cwd": {
+          "name": "cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "delete_after_idle_minutes": {
+          "name": "deleteAfterIdleMinutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "env_overlay": {
+          "name": "envOverlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "initial_num_machines": {
+          "name": "initialNumMachines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_cpu": {
+          "name": "machineCpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_memory_mb": {
+          "name": "machineMemoryMb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_name": {
+          "name": "machineName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_pool_name": {
+          "name": "machinePoolName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_provider_options_overlay": {
+          "name": "machineProviderOptionsOverlay",
+          "shape": {
+            "k": "any"
+          }
+        },
+        "max_machines": {
+          "name": "maxMachines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secret_env_overlay": {
+          "name": "secretEnvOverlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionMemoryStore": {
+      "props": {
+        "access": {
+          "name": "access",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionModel": {
+      "props": {
+        "cache_retention": {
+          "name": "cacheRetention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_max_output_tokens": {
+          "name": "defaultMaxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider_config": {
+          "name": "providerConfig",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "reasoning": {
+          "name": "reasoning",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionModelReasoning"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionModelReasoning": {
+      "props": {
+        "effort": {
+          "name": "effort",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionSubagent": {
+      "props": {
+        "archive_after_idle_minutes": {
+          "name": "archiveAfterIdleMinutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "instruction": {
+          "name": "instruction",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionSubagentInstruction"
+          }
+        },
+        "max_instances": {
+          "name": "maxInstances",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionSubagentModel"
+          }
+        },
+        "profile": {
+          "name": "profile",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionSubagentInstruction": {
+      "props": {
+        "append": {
+          "name": "append",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionSubagentModel": {
+      "props": {
+        "cache_retention": {
+          "name": "cacheRetention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_max_output_tokens": {
+          "name": "defaultMaxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider_config": {
+          "name": "providerConfig",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "reasoning": {
+          "name": "reasoning",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionModelReasoning"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionTool": {
+      "props": {
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "name": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "input_schema": {
+          "name": "inputSchema",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionToolInputSchema"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigDefinitionToolPermission"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionToolInputSchema": {
+      "props": {
+        "properties": {
+          "name": "properties",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "required": {
+          "name": "required",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDefinitionToolPermission": {
+      "props": {
+        "mode": {
+          "name": "mode",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "parameters": {
+          "name": "parameters",
+          "shape": {
+            "k": "any"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigDetails": {
+      "props": {
+        "compiled_definition": {
+          "name": "compiledDefinition",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledAgentConfig"
+          }
+        },
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "effective_definition_hash": {
+          "name": "effectiveDefinitionHash",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "instruction_hash": {
+          "name": "instructionHash",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:AgentConfigModel"
+          }
+        },
+        "org_id": {
+          "name": "orgId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "name": "source",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source_format": {
+          "name": "sourceFormat",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentConfigModel": {
+      "props": {
+        "api_format": {
+          "name": "apiFormat",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "api_variant": {
+          "name": "apiVariant",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "configured_model_id": {
+          "name": "configuredModelId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "current_revision_id": {
+          "name": "currentRevisionId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_cache_retention": {
+          "name": "defaultCacheRetention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_max_output_tokens": {
+          "name": "defaultMaxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_reasoning_effort": {
+          "name": "defaultReasoningEffort",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "input_modalities": {
+          "name": "inputModalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "max_output_tokens": {
+          "name": "maxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "output_modalities": {
+          "name": "outputModalities",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "provider_config": {
+          "name": "providerConfig",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider_model_slug": {
+          "name": "providerModelSlug",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supported_reasoning_efforts": {
+          "name": "supportedReasoningEfforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supports_reasoning": {
+          "name": "supportsReasoning",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supports_tools": {
+          "name": "supportsTools",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentCronTriggerTarget": {
+      "props": {
+        "agent_id": {
+          "name": "agentId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "delivery_mode": {
+          "name": "deliveryMode",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentEventWebhookScope": {
+      "props": {
+        "agent_id": {
+          "name": "agentId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentProfileCronTriggerTarget": {
+      "props": {
+        "agent_profile_id": {
+          "name": "agentProfileId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:AgentProfileEventWebhookScope": {
+      "props": {
+        "agent_profile_id": {
+          "name": "agentProfileId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledAgentConfig": {
+      "props": {
+        "git_credentials": {
+          "name": "gitCredentials",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledGitCredentials"
+          }
+        },
+        "instruction": {
+          "name": "instruction",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "interaction_handlers": {
+          "name": "interactionHandlers",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledIntegrationCapability"
+            }
+          }
+        },
+        "machine_sources": {
+          "name": "machineSources",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledMachineSource"
+            }
+          }
+        },
+        "max_depth": {
+          "name": "maxDepth",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "max_subagents": {
+          "name": "maxSubagents",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "mcp": {
+          "name": "mcp",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledMCPServer"
+            }
+          }
+        },
+        "memory_stores": {
+          "name": "memoryStores",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledMemoryStore"
+            }
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledAgentModel"
+          }
+        },
+        "skills": {
+          "name": "skills",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledSkill"
+            }
+          }
+        },
+        "subagents": {
+          "name": "subagents",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "union",
+              "variants": [
+                "omnara:index:CompiledSelfSubagent",
+                "omnara:index:CompiledProfileSubagent"
+              ]
+            }
+          }
+        },
+        "tools": {
+          "name": "tools",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledTool"
+            }
+          }
+        },
+        "version": {
+          "name": "version",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledAgentModel": {
+      "props": {
+        "cache_retention": {
+          "name": "cacheRetention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "configured_model_id": {
+          "name": "configuredModelId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_max_output_tokens": {
+          "name": "defaultMaxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "reasoning": {
+          "name": "reasoning",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledModelReasoning"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledGitCredentials": {
+      "props": {
+        "integration": {
+          "name": "integration",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "integration_id": {
+          "name": "integrationId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "read_only": {
+          "name": "readOnly",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "repository_ids": {
+          "name": "repositoryIds",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledIntegrationCapability": {
+      "props": {
+        "integration_id": {
+          "name": "integrationId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMCPAuthBearer": {
+      "props": {
+        "secret_id": {
+          "name": "secretId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMCPAuthOAuth": {
+      "props": {
+        "secret_id": {
+          "name": "secretId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMCPAuthSigV4": {
+      "props": {
+        "region": {
+          "name": "region",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secret_id": {
+          "name": "secretId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "service": {
+          "name": "service",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMCPServer": {
+      "props": {
+        "auth": {
+          "name": "auth",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:CompiledMCPAuthBearer",
+              "omnara:index:CompiledMCPAuthOAuth",
+              "omnara:index:CompiledMCPAuthSigV4"
+            ]
+          }
+        },
+        "default_enabled": {
+          "name": "defaultEnabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionSelection"
+          }
+        },
+        "tools": {
+          "name": "tools",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:CompiledMCPTool"
+            }
+          }
+        },
+        "url": {
+          "name": "url",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMCPTool": {
+      "props": {
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "name": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionSelection"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMachineSource": {
+      "props": {
+        "cwd": {
+          "name": "cwd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "delete_after_idle_minutes": {
+          "name": "deleteAfterIdleMinutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "env_overlay": {
+          "name": "envOverlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "initial_num_machines": {
+          "name": "initialNumMachines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_cpu": {
+          "name": "machineCpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_id": {
+          "name": "machineId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_memory_mb": {
+          "name": "machineMemoryMb",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_pool_id": {
+          "name": "machinePoolId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machine_provider_options_overlay": {
+          "name": "machineProviderOptionsOverlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "max_machines": {
+          "name": "maxMachines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "secret_env_overlay": {
+          "name": "secretEnvOverlay",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledMemoryStore": {
+      "props": {
+        "access": {
+          "name": "access",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledModelReasoning": {
+      "props": {
+        "effort": {
+          "name": "effort",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledProfileSubagent": {
+      "props": {
+        "archive_after_idle_minutes": {
+          "name": "archiveAfterIdleMinutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "instruction_append": {
+          "name": "instructionAppend",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "max_instances": {
+          "name": "maxInstances",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledSubagentModel"
+          }
+        },
+        "profile_id": {
+          "name": "profileId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledSelfSubagent": {
+      "props": {
+        "archive_after_idle_minutes": {
+          "name": "archiveAfterIdleMinutes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "instruction_append": {
+          "name": "instructionAppend",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "max_instances": {
+          "name": "maxInstances",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "model": {
+          "name": "model",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledSubagentModel"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledSkill": {
+      "props": {
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledSubagentModel": {
+      "props": {
+        "cache_retention": {
+          "name": "cacheRetention",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "configured_model_id": {
+          "name": "configuredModelId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "default_max_output_tokens": {
+          "name": "defaultMaxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "reasoning": {
+          "name": "reasoning",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:CompiledModelReasoning"
+          }
+        }
+      }
+    },
+    "omnara:index:CompiledTool": {
+      "props": {
+        "deferred": {
+          "name": "deferred",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "enabled": {
+          "name": "enabled",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "input_schema": {
+          "name": "inputSchema",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "integration_id": {
+          "name": "integrationId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission": {
+          "name": "permission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionSelection"
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CronTriggerFailureReport": {
+      "props": {
+        "failed_at": {
+          "name": "failedAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "message": {
+          "name": "message",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "will_retry": {
+          "name": "willRetry",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CronTriggerLastRun": {
+      "props": {
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "failure_message": {
+          "name": "failureMessage",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "state": {
+          "name": "state",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updated_at": {
+          "name": "updatedAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CurrentUserIdentity": {
+      "props": {
+        "display_name": {
+          "name": "displayName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "email": {
+          "name": "email",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:CurrentUserOrg": {
+      "props": {
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "role": {
+          "name": "role",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:DirectSecretAvailability": {
+      "props": {
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "name": "source",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:DirectSkillAvailability": {
+      "props": {
+        "source": {
+          "name": "source",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:DiscoveredModelPricing": {
+      "props": {
+        "cache_read_input_usd_per_million": {
+          "name": "cacheReadInputUsdPerMillion",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "cache_write_input_usd_per_million": {
+          "name": "cacheWriteInputUsdPerMillion",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "input_usd_per_million": {
+          "name": "inputUsdPerMillion",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "output_usd_per_million": {
+          "name": "outputUsdPerMillion",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:DiscoveredProviderModel": {
+      "props": {
+        "context_window_tokens": {
+          "name": "contextWindowTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "display_name": {
+          "name": "displayName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "max_output_tokens": {
+          "name": "maxOutputTokens",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "pricing": {
+          "name": "pricing",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:DiscoveredModelPricing"
+          }
+        },
+        "slug": {
+          "name": "slug",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "supported_reasoning_efforts": {
+          "name": "supportedReasoningEfforts",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "supports_reasoning": {
+          "name": "supportsReasoning",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:GenericSecretMaterial": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "value": {
+          "name": "value",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:GitHubAppCredentialsSecretMaterial": {
+      "props": {
+        "app_id": {
+          "name": "appId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "private_key": {
+          "name": "privateKey",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "webhook_secret": {
+          "name": "webhookSecret",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:GrantedSecretAvailability": {
+      "props": {
+        "grant_id": {
+          "name": "grantId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "name": "source",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:GrantedSkillAvailability": {
+      "props": {
+        "grant_id": {
+          "name": "grantId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source": {
+          "name": "source",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationCapabilities": {
+      "props": {
+        "interaction_handler": {
+          "name": "interactionHandler",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationCapabilityDefinition"
+          }
+        },
+        "schedule": {
+          "name": "schedule",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationCapabilityDefinition"
+          }
+        },
+        "settings": {
+          "name": "settings",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationCapabilityDefinition"
+          }
+        },
+        "subscription": {
+          "name": "subscription",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationSubscriptionDefinition"
+          }
+        },
+        "tools": {
+          "name": "tools",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:IntegrationCapabilityDefinition"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationCapabilityDefinition": {
+      "props": {
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "input_schema": {
+          "name": "inputSchema",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationCronTriggerTarget": {
+      "props": {
+        "integration_id": {
+          "name": "integrationId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "settings": {
+          "name": "settings",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        },
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationDefinition": {
+      "props": {
+        "capabilities": {
+          "name": "capabilities",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:IntegrationCapabilities"
+          }
+        },
+        "integration_kind": {
+          "name": "integrationKind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationRuntimeFailure": {
+      "props": {
+        "message": {
+          "name": "message",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "retry_at": {
+          "name": "retryAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:IntegrationSubscriptionDefinition": {
+      "props": {
+        "conversation_schema": {
+          "name": "conversationSchema",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:MachineAccess": {
+      "props": {
+        "can_manage": {
+          "name": "canManage",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "sources": {
+          "name": "sources",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:MachineAccessSource"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:MachineAccessSource": {
+      "props": {
+        "grant_id": {
+          "name": "grantId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "grant_source_kind": {
+          "name": "grantSourceKind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:MachineFailureReport": {
+      "props": {
+        "daemon_version": {
+          "name": "daemonVersion",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "exit_status": {
+          "name": "exitStatus",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "output_tail": {
+          "name": "outputTail",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "output_truncated": {
+          "name": "outputTruncated",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "reported_at": {
+          "name": "reportedAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "stage": {
+          "name": "stage",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "target_version": {
+          "name": "targetVersion",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:MachinePoolUsage": {
+      "props": {
+        "cpu": {
+          "name": "cpu",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "machines": {
+          "name": "machines",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "memory_mb": {
+          "name": "memoryMb",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ModelProviderConfigAuthOptions": {
+      "props": {
+        "header_name": {
+          "name": "headerName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "region": {
+          "name": "region",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "service": {
+          "name": "service",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OAuthRefreshSecretMaterial": {
+      "props": {
+        "client_id": {
+          "name": "clientId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "client_secret": {
+          "name": "clientSecret",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "refresh_token": {
+          "name": "refreshToken",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "resource": {
+          "name": "resource",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "token_endpoint": {
+          "name": "tokenEndpoint",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OAuthTokenSetSecretMaterial": {
+      "props": {
+        "access_token": {
+          "name": "accessToken",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "access_token_expires_in_seconds": {
+          "name": "accessTokenExpiresInSeconds",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id_token": {
+          "name": "idToken",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "mcp_url": {
+          "name": "mcpUrl",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "refresh": {
+          "name": "refresh",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:OAuthRefreshSecretMaterial"
+          }
+        },
+        "scopes": {
+          "name": "scopes",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "token_type": {
+          "name": "tokenType",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OrgSecretOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OrgSecretOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OrgSkillOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:OrgSkillOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectAccess": {
+      "props": {
+        "can_manage": {
+          "name": "canManage",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "can_manage_access": {
+          "name": "canManageAccess",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "can_operate": {
+          "name": "canOperate",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "can_read": {
+          "name": "canRead",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectEventWebhookScope": {
+      "props": {
+        "type": {
+          "name": "type",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSecretAccess": {
+      "props": {
+        "availability": {
+          "name": "availability",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:DirectSecretAvailability",
+              "omnara:index:GrantedSecretAvailability"
+            ]
+          }
+        },
+        "secret": {
+          "name": "secret",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:SecretDetails"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSecretOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSecretOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSkillAccess": {
+      "props": {
+        "availability": {
+          "name": "availability",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:DirectSkillAvailability",
+              "omnara:index:GrantedSkillAvailability"
+            ]
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "skill": {
+          "name": "skill",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:SkillDetails"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSkillOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ProjectSkillOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "project_id": {
+          "name": "projectId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:SecretDetails": {
+      "props": {
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "current_version_number": {
+          "name": "currentVersionNumber",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "management_kind": {
+          "name": "managementKind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "metadata": {
+          "name": "metadata",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "org_id": {
+          "name": "orgId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "owner": {
+          "name": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSecretOwner",
+              "omnara:index:ProjectSecretOwner",
+              "omnara:index:UserSecretOwner"
+            ]
+          }
+        },
+        "payload_keys": {
+          "name": "payloadKeys",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "prim"
+            }
+          }
+        },
+        "updated_at": {
+          "name": "updatedAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:SkillDetails": {
+      "props": {
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "files": {
+          "name": "files",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:SkillFile"
+            }
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "org_id": {
+          "name": "orgId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "owner": {
+          "name": "owner",
+          "shape": {
+            "k": "union",
+            "variants": [
+              "omnara:index:OrgSkillOwner",
+              "omnara:index:ProjectSkillOwner",
+              "omnara:index:UserSkillOwner"
+            ]
+          }
+        },
+        "revision": {
+          "name": "revision",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "revision_id": {
+          "name": "revisionId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "skill_md": {
+          "name": "skillMd",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updated_at": {
+          "name": "updatedAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:SkillFile": {
+      "props": {
+        "path": {
+          "name": "path",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "size": {
+          "name": "size",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:ToolCatalogEntry": {
+      "props": {
+        "default_permission": {
+          "name": "defaultPermission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionSelection"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "implicit": {
+          "name": "implicit",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "permission_modes": {
+          "name": "permissionModes",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:ToolPermissionMode"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:ToolPermissionMode": {
+      "props": {
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "label": {
+          "name": "label",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "parameters_schema": {
+          "name": "parametersSchema",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:ToolPermissionProfile": {
+      "props": {
+        "default_permission": {
+          "name": "defaultPermission",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ToolPermissionSelection"
+          }
+        },
+        "permission_modes": {
+          "name": "permissionModes",
+          "shape": {
+            "k": "array",
+            "items": {
+              "k": "ref",
+              "ref": "omnara:index:ToolPermissionMode"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:ToolPermissionSelection": {
+      "props": {
+        "mode": {
+          "name": "mode",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "parameters": {
+          "name": "parameters",
+          "shape": {
+            "k": "map",
+            "items": {
+              "k": "any"
+            }
+          }
+        }
+      }
+    },
+    "omnara:index:UserSecretOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "user_id": {
+          "name": "userId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:UserSecretOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:UserSkillOwner": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "user_id": {
+          "name": "userId",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:UserSkillOwnerInput": {
+      "props": {
+        "kind": {
+          "name": "kind",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:VisibleMachine": {
+      "props": {
+        "access": {
+          "name": "access",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:MachineAccess"
+          }
+        },
+        "connection_state": {
+          "name": "connectionState",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "deleted_at": {
+          "name": "deletedAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "description": {
+          "name": "description",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "display_name": {
+          "name": "displayName",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "last_observed_at": {
+          "name": "lastObservedAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "lifecycle_state": {
+          "name": "lifecycleState",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "org_id": {
+          "name": "orgId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "provider": {
+          "name": "provider",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "source_kind": {
+          "name": "sourceKind",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updated_at": {
+          "name": "updatedAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    },
+    "omnara:index:VisibleProject": {
+      "props": {
+        "access": {
+          "name": "access",
+          "shape": {
+            "k": "ref",
+            "ref": "omnara:index:ProjectAccess"
+          }
+        },
+        "created_at": {
+          "name": "createdAt",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "id": {
+          "name": "id",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "name": {
+          "name": "name",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "org_id": {
+          "name": "orgId",
+          "shape": {
+            "k": "prim"
+          }
+        },
+        "updated_at": {
+          "name": "updatedAt",
+          "shape": {
+            "k": "prim"
+          }
+        }
+      }
+    }
+  }
+}

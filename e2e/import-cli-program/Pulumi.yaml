@@ -1,0 +1,7 @@
+name: omnara-e2e-import-cli
+runtime: yaml
+description: Empty program that run.sh imports into with `pulumi import`.
+plugins:
+  providers:
+    - name: omnara
+      path: ../../provider/bin
