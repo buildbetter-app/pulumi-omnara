@@ -3,7 +3,7 @@ PROVIDER   := pulumi-resource-omnara
 VERSION    ?= 0.1.0
 LDFLAGS    := -X $(PROJECT)/provider/pkg/version.Version=$(VERSION)
 PULUMI     ?= pulumi
-PULUMI_NODE_SDK_VERSION ?= 3.229.0
+PULUMI_NODE_SDK_VERSION ?= 3.273.0
 PULUMI_NODE_SDK_IMPORT_MIDDLE_VERSION ?= 3.5.3
 BIN        := provider/bin
 OMNARA_REF ?= main
