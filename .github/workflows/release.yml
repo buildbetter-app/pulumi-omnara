@@ -50,7 +50,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           make sdks VERSION="$VERSION"
-          make build-sdk-nodejs build-sdk-python
+          make build-sdk-nodejs build-sdk-python build-sdk-dotnet
           (cd sdk/nodejs/bin && npm pack --pack-destination ../../../dist)
           (cd sdk/dotnet && dotnet pack -c Release -o ../../dist)
       - name: Attach SDK packages
