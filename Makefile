@@ -44,7 +44,7 @@ build-sdk-go:
 	cd sdk && go build ./... && go vet ./...
 
 build-sdk-dotnet:
-	cd sdk/dotnet && dotnet build
+	cd sdk/dotnet && dotnet build -c Release
 
 lint:
 	cd provider && go vet ./...
