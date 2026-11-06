@@ -3,6 +3,8 @@ PROVIDER   := pulumi-resource-omnara
 VERSION    ?= 0.1.0
 LDFLAGS    := -X $(PROJECT)/provider/pkg/version.Version=$(VERSION)
 PULUMI     ?= pulumi
+PULUMI_NODE_SDK_VERSION ?= 3.274.0
+PULUMI_NODE_SDK_IMPORT_MIDDLE_VERSION ?= 3.5.3
 BIN        := provider/bin
 OMNARA_REF ?= main
 
@@ -34,7 +36,7 @@ sdks: schema
 build-sdks: build-sdk-nodejs build-sdk-python build-sdk-go build-sdk-dotnet
 
 build-sdk-nodejs:
-	cd sdk/nodejs && npm install --no-audit --no-fund && npx tsc
+	cd sdk/nodejs && npm install --no-audit --no-fund --package-lock=false --save-exact @pulumi/pulumi@$(PULUMI_NODE_SDK_VERSION) import-in-the-middle@$(PULUMI_NODE_SDK_IMPORT_MIDDLE_VERSION) && npx tsc
 	cp README.md LICENSE sdk/nodejs/package.json sdk/nodejs/bin/
 
 build-sdk-python:
